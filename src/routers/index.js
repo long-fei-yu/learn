@@ -3,7 +3,6 @@ import {
     createMaterialTopTabNavigator,
     createStackNavigator,
     createDrawerNavigator,
-    createSwitchNavigator,
 } from 'react-navigation';
 import React from 'react';
 import Color from '../lib/color';
@@ -27,7 +26,9 @@ import MenusContainer from '../containers/menus/menusContainer';
  */
 
 //日报
-import DailyContainer from '../containers/zhiHu/daily/dailyContainer'
+import DailyContainer from '../containers/zhiHu/daily/dailyContainer';
+//日报详情
+import DailyDetailContainer from '../containers/zhiHu/daily/dailyDetailContainer';
 
 //主题
 import ThemeContainer from '../containers/zhiHu/theme/themeContainer';
@@ -124,6 +125,7 @@ const MainStack = createDrawerNavigator(
         DouBan: DouBanStack,
         About: AboutContainer,
         Setting: SettingContainer,
+
     },
     {
         initialRouteName: 'ZhiHu',
@@ -155,7 +157,13 @@ const RootStack = createStackNavigator(
             navigationOptions: {
                 title: '电影详情',
             }
-        }
+        },
+        DailyDetail: {
+            screen: DailyDetailContainer,
+            navigationOptions: {
+                title: '电影详情',
+            }
+        },
 
     },
     {

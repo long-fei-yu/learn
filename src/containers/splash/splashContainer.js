@@ -40,7 +40,7 @@ export default class SplashContainer extends BaseComponent {
                         <ImageBackground
                             style={BaseStyle.content}
                             resizeMode={'cover'}
-                            source={{uri: 'https://h5.sinaimg.cn/upload/1045/521/2018/04/25/liyifeng01.png'}}>
+                            source={{uri: 'https://pic3.zhimg.com/v2-5af460972557190bd4306ad66f360d4a.jpg'}}>
 
                             <TouchableOpacity
                                 style={styles.time}

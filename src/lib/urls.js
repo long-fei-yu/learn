@@ -3,10 +3,14 @@
  *
  */
 
+const COMMON = {
+    zhihu: 'https://news-at.zhihu.com/api/',
+};
 
 
-export const urls = {
-
-
+export const URLS = {
+    hot: `${COMMON.zhihu}3/news/hot`,
 
 };
+
+

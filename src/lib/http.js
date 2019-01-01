@@ -34,25 +34,18 @@ export default class HttpUtil {
     }
 
 
-    static get() {
+    static get(url) {
 
-        console.log('token', token);
-
-        fetch('http://39.98.69.210:8080/product/list?pageNum=1&pageSize=5', {
+        fetch(url, {
             method: 'GET',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
         })
             .then(response => {
-                console.log(response);
+                console.log('response', response._bodyText);
+                return JSON.parse(response._bodyText);
             })
             .catch(error => {
                 console.log(error);
             })
-
     }
 
 }

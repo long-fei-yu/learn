@@ -36,7 +36,10 @@ const styles = StyleSheet.create({
         color: Color.c000000,
     },
 
-
+    s18cFFFFFF: {
+        fontSize: Dimen.s18,
+        color: Color.cFFFFFF,
+    },
 });
 
 export default styles;
