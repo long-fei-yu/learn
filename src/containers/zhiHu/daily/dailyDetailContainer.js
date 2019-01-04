@@ -20,12 +20,6 @@ import Color from "../../../lib/color";
 
 export default class DailyDetailContainer extends BaseComponent {
 
-    static navigationOptions = ({navigation}) => {
-        return {
-            title: '1111',
-        };
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -39,6 +33,7 @@ export default class DailyDetailContainer extends BaseComponent {
             this.setState({
                 data: res,
             });
+            this.setParams({title: res.title})
         });
 
         Http.get({url: `${URLS.storyExtra + this.getRouteParams().id}`}, (res) => {

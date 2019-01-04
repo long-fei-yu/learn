@@ -172,11 +172,9 @@ const RootStack = createStackNavigator(
         },
         DailyComment: {
             screen: DailyCommentContainer,
-            navigationOptions: ({navigation}) => (
-                {
-                    title: navigation.state.params.title,
-                }
-            )
+            navigationOptions: {
+                title: '评论',
+            }
         },
         ColumnDetail: {
             screen: ColumnDetailContainer,
