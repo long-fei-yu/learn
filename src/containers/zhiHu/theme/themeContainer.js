@@ -9,7 +9,6 @@ export default class ThemeContainer extends BaseComponent {
         return (
             <SafeAreaView style={BaseStyle.container}>
                 <View style={BaseStyle.content}>
-                    <Text>Welcome to React ThemeContainer!</Text>
                 </View>
             </SafeAreaView>
         );

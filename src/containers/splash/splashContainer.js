@@ -14,7 +14,7 @@ export default class SplashContainer extends BaseComponent {
         this.countInterval = setInterval(() => {
             let {count} = this.state;
             if (count <= 0) {
-                this.navigate('Main');
+                this.replace('Main');
             } else {
                 this.setState({count: --count});
             }

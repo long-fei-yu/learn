@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import BaseStyle from "../../lib/baseStyle";
 import  Color from '../../lib/color';
 import PropTypes from 'prop-types';
+import _ from "lodash";
 
 export default class NewsCcomponent extends Component {
 
@@ -18,8 +19,11 @@ export default class NewsCcomponent extends Component {
         onPress: null,
     };
 
-    render() {
+    shouldComponentUpdate(nextProps, nextState) {
+        return !(_.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState));
+    }
 
+    render() {
         const {url, title, onPress} = this.props;
 
         return (

@@ -40,6 +40,27 @@ const styles = StyleSheet.create({
         fontSize: Dimen.s18,
         color: Color.cFFFFFF,
     },
+
+    s12cD9D9D9: {
+        fontSize: Dimen.s12,
+        color: Color.cD9D9D9,
+    },
+
+    s12c000000: {
+        fontSize: Dimen.s12,
+        color: Color.c000000,
+    },
+
+    s12c333333: {
+        fontSize: Dimen.s12,
+        color: Color.c333333,
+    },
+
+    s12c999999: {
+        fontSize: Dimen.s12,
+        color: Color.c999999,
+    },
+
 });
 
 export default styles;

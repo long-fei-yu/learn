@@ -1,5 +1,9 @@
 let token = '';
 
+const SUCCESS_CODE = 0;//成功
+const TIMEOUT_CODE = 1;//连接超时
+const ERROR_CODE = 2;//连接错误
+
 export default class HttpUtil {
 
 
@@ -34,18 +38,36 @@ export default class HttpUtil {
     }
 
 
-    static get(url) {
+    static async get(options, successCallback, errorCallBack) {
+        const params = Object.assign({}, options.param);
+        let str = '';
+        for (let param in params) {
+            str += `${i}=${param[i]}&`;
+        }
+        let result;
 
-        fetch(url, {
-            method: 'GET',
-        })
-            .then(response => {
-                console.log('response', response._bodyText);
-                return JSON.parse(response._bodyText);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        try {
+            result = await fetch(`${options.url}?${str}`, {method: 'GET'})
+                .then((response) => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        errorCallBack && errorCallBack(response);
+                    }
+                })
+                .catch((error) => {
+                    errorCallBack && errorCallBack(error);
+                });
+        } catch (error) {
+            errorCallBack && errorCallBack(error);
+        }
+
+        console.log('url:', options.url);
+        console.log('result:', result);
+
+        if (result) {
+            successCallback && successCallback(result);
+        }
     }
 
 }

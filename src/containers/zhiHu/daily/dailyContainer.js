@@ -1,64 +1,77 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, SafeAreaView} from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
 import Color from '../../../lib/color';
 import Swiper from 'react-native-swiper';
 import PropTypes from 'prop-types';
-import  NewsCcomponent from '../newsCcomponent';
+import NewsCcomponent from '../newsCcomponent';
+import Http from "../../../lib/http";
+import {URLS} from "../../../lib/urls";
+import _ from "lodash";
 
 export default class DailyContainer extends BaseComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            topStories: [1, 2, 3, 4],
-            stories: [1, 2, 3, 4],
+            topStories: [],
+            stories: [],
         };
     }
 
-    onTopPress = () => {
+    componentDidMount() {
+        Http.get({url: URLS.latest}, (res) => {
+            this.setState({
+                topStories: res.top_stories,
+                stories: res.stories,
+            });
+        });
+    }
 
-    };
-
-    onPress = () => {
-        this.push('DailyDetail');
+    onPress = (id) => {
+        this.push('DailyDetail', {id});
     };
 
     render() {
         const {topStories, stories} = this.state;
 
         return (
-            <View style={BaseStyle.container}>
+            <ScrollView style={BaseStyle.content}
+                        bounces={false}
+                        scrollEnabled={true}
+                        automaticallyAdjustContentInsets={false}
+                        scrollEventThrottle={10}>
+                <View style={BaseStyle.container}>
 
-                <View style={styles.wrapper}>
-                    <Swiper height={400} autoplay={true} paginationStyle={{bottom: 10}}>
+                    <View style={styles.wrapper}>
+                        <Swiper height={400} paginationStyle={{bottom: 10}}>
 
-                        {topStories.map((data, index) => {
-                            return (<View>
-                                <Carousel key={index}
-                                          onPress={this.onTopPress}
-                                          title={'dajflakfjlak'}
-                                          image={'https://pic4.zhimg.com/v2-d2a42e90887bbf56b7fb7de3a7723f2f.jpg'}/>
-                            </View>)
-                        })}
-                    </Swiper>
+                            {topStories.map((data, index) => {
+                                return (
+                                    <View key={data + index}>
+                                        <Carousel
+                                            onPress={this.onPress.bind(this, data.id)}
+                                            title={data.title}
+                                            image={data.image}/>
+                                    </View>)
+                            })}
+                        </Swiper>
+                    </View>
+
+                    <View style={styles.time}>
+                        <Text style={BaseStyle.s14cFFFFFF}>今日新闻</Text>
+                    </View>
+
+                    {stories.map((data, index) => {
+                        return <NewsCcomponent key={data + index}
+                                               url={data.images[0]}
+                                               title={data.title}
+                                               onPress={this.onPress.bind(this, data.id)}/>
+
+                    })}
                 </View>
-
-                <View style={styles.time}>
-                    <Text style={BaseStyle.s14cFFFFFF}>今日新闻</Text>
-                </View>
-
-
-                {stories.map((data, index) => {
-                    return <NewsCcomponent key={index}
-                                           url={'https://pic4.zhimg.com/v2-e70647e35eb09ce571546426727aa2df.jpg'}
-                                           title={'瞎扯：如何正确地吐槽瞎扯：如何正确地吐槽瞎扯：如何正确地吐槽瞎扯：如何正确地吐槽'}
-                                           onPress={this.onPress}/>
-
-                })}
-
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -76,6 +89,10 @@ class Carousel extends Component {
         title: '',
         onPress: null,
     };
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return !(_.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState));
+    }
 
     render() {
         const {image, title, onPress} = this.props;
@@ -100,7 +117,8 @@ const styles = StyleSheet.create({
 
     txt: {
         flex: 1,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        fontWeight: 'bold',
     },
 
     title: {

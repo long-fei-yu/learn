@@ -6,6 +6,7 @@ export default class BaseComponent extends Component {
 
     constructor(props) {
         super(props);
+        console.log('Component props', props);
     }
 
     shouldComponentUpdate(nextProps, nextState) {

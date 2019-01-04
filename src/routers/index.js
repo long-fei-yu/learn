@@ -3,6 +3,7 @@ import {
     createMaterialTopTabNavigator,
     createStackNavigator,
     createDrawerNavigator,
+    createSwitchNavigator
 } from 'react-navigation';
 import React from 'react';
 import Color from '../lib/color';
@@ -29,12 +30,16 @@ import MenusContainer from '../containers/menus/menusContainer';
 import DailyContainer from '../containers/zhiHu/daily/dailyContainer';
 //日报详情
 import DailyDetailContainer from '../containers/zhiHu/daily/dailyDetailContainer';
+//评论
+import DailyCommentContainer from '../containers/zhiHu/daily/dailyCommentContainer';
 
 //主题
 import ThemeContainer from '../containers/zhiHu/theme/themeContainer';
 
 //专栏
 import ColumnContainer from '../containers/zhiHu/column/columnContainer';
+//专栏详情
+import ColumnDetailContainer from '../containers/zhiHu/column/columnDetailContainer';
 
 //热门
 import PopularContainer from '../containers/zhiHu/popular/popularContainer';
@@ -70,6 +75,10 @@ import SettingContainer from '../containers/setting/settingContainer';
 
 import AboutContainer from '../containers/about/aboutContainer';
 
+/**
+ * 加载网页
+ */
+import WebContainer from '../containers/web/webContainer';
 
 /**
  * 知乎Stack
@@ -126,6 +135,7 @@ const MainStack = createDrawerNavigator(
         About: AboutContainer,
         Setting: SettingContainer,
 
+
     },
     {
         initialRouteName: 'ZhiHu',
@@ -152,16 +162,41 @@ const RootStack = createStackNavigator(
                 header: null,
             },
         },
+        DailyDetail: {
+            screen: DailyDetailContainer,
+            navigationOptions: ({navigation}) => (
+                {
+                    title: navigation.state.params.title,
+                }
+            ),
+        },
+        DailyComment: {
+            screen: DailyCommentContainer,
+            navigationOptions: ({navigation}) => (
+                {
+                    title: navigation.state.params.title,
+                }
+            )
+        },
+        ColumnDetail: {
+            screen: ColumnDetailContainer,
+            navigationOptions: ({navigation}) => (
+                {
+                    title: navigation.state.params.title,
+                }
+            )
+        },
         MovieDetails: {
             screen: MovieDetailsContainer,
             navigationOptions: {
                 title: '电影详情',
             }
         },
-        DailyDetail: {
-            screen: DailyDetailContainer,
+
+        Web: {
+            screen: WebContainer,
             navigationOptions: {
-                title: '电影详情',
+                title: 'Web',
             }
         },
 
