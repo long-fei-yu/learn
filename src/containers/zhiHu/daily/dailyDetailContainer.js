@@ -159,10 +159,10 @@ class Option extends Component {
         return (
             <TouchableOpacity style={styles.option} onPress={onPress}>
                 <View>
-                    <Text style={styles.optionText}>{text}</Text>
                     <Image source={path}
                            style={styles.optionIcon}
                            resizeMode={'cover'}/>
+                    <Text style={styles.optionText}>{text}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     },
     optionText: {
         alignSelf: 'flex-end',
-        marginBottom: -10,
+        marginTop: -35,
         marginRight: -18
     },
     optionIcon: {

@@ -45,7 +45,8 @@ export default class DailyContainer extends BaseComponent {
                 <View style={BaseStyle.container}>
 
                     <View style={styles.wrapper}>
-                        <Swiper height={400} paginationStyle={{bottom: 10}}>
+                        <Swiper height={200} paginationStyle={{bottom: 10}} index={0} autoplay={true}
+                                key={topStories.length}>
 
                             {topStories.map((data, index) => {
                                 return (
