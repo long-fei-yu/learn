@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.learn.R;
 
 import java.lang.ref.WeakReference;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -34,7 +33,7 @@ public class SplashScreen {
                     View view = mInflater.inflate(R.layout.launch_screen, null);
                     TextView timeTv = view.findViewById(R.id.time);
 
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
                     String time = sdf.format(new Date());
 
                     timeTv.setText(time);
