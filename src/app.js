@@ -7,12 +7,11 @@
  */
 
 import React, {Component} from 'react';
-
 import './lib/deviceParameter';
-
 import {AppNavigator} from './routers';
 import {createAppContainer} from 'react-navigation';
-
+import {Provider} from 'react-redux';
+import {store} from './redux/store/index';
 
 const AppContainer = createAppContainer(AppNavigator);
 
@@ -42,13 +41,17 @@ export default class App extends Component<Props> {
 
 
     render() {
-        return <AppContainer
-            onNavigationStateChange={(prevState, newState, action) => {
-                //console.log('prevState', prevState);
-                //console.log('newState', newState);
-                //console.log('action', action);
-            }}
-        />;
+        return (
+            <Provider store={store}>
+                <AppContainer
+                    onNavigationStateChange={(prevState, newState, action) => {
+                        //console.log('prevState', prevState);
+                        //console.log('newState', newState);
+                        //console.log('action', action);
+                    }}
+                />
+            </Provider>
+        );
     }
 }
 
