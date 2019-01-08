@@ -5,7 +5,7 @@ import BaseStyle from '../../lib/baseStyle';
 import Color from '../../lib/color';
 import MenuTab from './menuTab';
 import {connect} from 'react-redux';
-import * as Action from '../../redux/actions/menusAction';
+import * as menusAction from '../../redux/actions/menusAction';
 
 @connect(
     state => ({
@@ -13,7 +13,7 @@ import * as Action from '../../redux/actions/menusAction';
     }),
     dispatch => ({
         menuClick: index => {
-            dispatch(Action.menuClick(index));
+            dispatch(menusAction.menuClick(index));
         }
     })
 )

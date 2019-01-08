@@ -1,4 +1,4 @@
-import * as Action from '../actions/menusAction';
+import * as menusAction from '../actions/menusAction';
 
 const initData = {
     index: 0,
@@ -7,7 +7,7 @@ const initData = {
 const menusReducer = (state = initData, action) => {
 
     switch (action.type) {
-        case Action.MENU_CLICK:
+        case menusAction.MENU_CLICK:
             return {
                 ...state, index: action.index
             };

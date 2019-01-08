@@ -9,39 +9,101 @@ import NewsCcomponent from '../newsCcomponent';
 import Http from "../../../lib/http";
 import {URLS} from "../../../lib/urls";
 import _ from "lodash";
+import {formatDate} from '../../../lib/public';
+import {connect} from 'react-redux';
+import * as dailyAction from '../../../redux/actions/dailyAction';
 
+@connect(
+    state => ({}),
+    dispatch => (
+        {
+            slide: title => {
+                dispatch(dailyAction.onSlide(title))
+            }
+        }
+    )
+)
 export default class DailyContainer extends BaseComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             topStories: [],
-            stories: [],
+            date: '',
+            dataStories: [],
         };
     }
 
     componentDidMount() {
+        let {dataStories} = this.state;
+        let copyStories = _.clone(dataStories);
+
         Http.get({url: URLS.latest}, (res) => {
             this.setState({
                 topStories: res.top_stories,
-                stories: res.stories,
+                date: res.date,
+                dataStories: _.concat(copyStories, {
+                    date: res.date,
+                    stories: res.stories
+                }),
             });
         });
     }
+
+    getBefore = () => {
+        let {date, dataStories} = this.state;
+        let copyStories = _.clone(dataStories);
+
+        Http.get({url: `${URLS.before + date}`}, (res) => {
+            this.setState({
+                date: res.date,
+                dataStories: _.concat(copyStories, res),
+            });
+        });
+    };
+
+    strToWeeks = (str) => {
+        let years = Number(str.substr(0, 4));
+        let month = Number(str.substr(4, 2));
+        let day = Number(str.substr(6, 2));
+
+        return formatDate(new Date(years, month - 1, day), 'MM月dd日 EEE');
+    };
 
     onPress = (id) => {
         this.push('DailyDetail', {id});
     };
 
+    onContentScroll = e => {
+        let {dataStories} = this.state;
+
+        this.props.slide(this.strToWeeks(dataStories[dataStories.length - 1].date));
+
+        //滑动距离
+        let offsetY = e.nativeEvent.contentOffset.y;
+        //scrollView contentSize高度
+        let contentSizeHeight = e.nativeEvent.contentSize.height;
+        //scrollView高度
+        let oriageScrollHeight = e.nativeEvent.layoutMeasurement.height;
+
+
+        if (offsetY + oriageScrollHeight >= contentSizeHeight) {
+            //滑动到底部
+            this.getBefore();
+        }
+    };
+
     render() {
-        const {topStories, stories} = this.state;
+        const {topStories, dataStories} = this.state;
 
         return (
             <ScrollView style={BaseStyle.content}
                         bounces={false}
                         scrollEnabled={true}
                         automaticallyAdjustContentInsets={false}
-                        scrollEventThrottle={10}>
+                        scrollEventThrottle={10}
+                        onScroll={this.onContentScroll}>
+
                 <View style={BaseStyle.container}>
 
                     <View style={styles.wrapper}>
@@ -60,17 +122,32 @@ export default class DailyContainer extends BaseComponent {
                         </Swiper>
                     </View>
 
-                    <View style={styles.time}>
-                        <Text style={BaseStyle.s14cFFFFFF}>今日新闻</Text>
-                    </View>
+                    {
+                        dataStories.map((data, index) => {
+                            return (
+                                <View key={data + index}>
+                                    {data.date !== formatDate(new Date(), 'yyyyMMdd') ?
+                                        (<View style={styles.time}>
+                                            <Text
+                                                style={BaseStyle.s14cFFFFFF}>{this.strToWeeks(data.date)}</Text>
+                                        </View>) : null}
 
-                    {stories.map((data, index) => {
-                        return <NewsCcomponent key={data + index}
-                                               url={data.images[0]}
-                                               title={data.title}
-                                               onPress={this.onPress.bind(this, data.id)}/>
-
-                    })}
+                                    {data.stories.map((data, index) => {
+                                            return (
+                                                <View key={data + index}>
+                                                    <NewsCcomponent
+                                                        url={data.images[0]}
+                                                        title={data.title}
+                                                        onPress={this.onPress.bind(this, data.id)}/>
+                                                </View>
+                                            )
+                                        }
+                                    )}
+                                </View>
+                            )
+                        })
+                    }
+                    <View/>
                 </View>
             </ScrollView>
         );

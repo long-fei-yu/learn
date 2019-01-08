@@ -8,6 +8,8 @@ const color = {
     c2EBDED: '#2EBDED',
     c67BB62: '#67BB62',
     c939393: '#939393',
+    cF5F5F5: '#F5F5F5',
+    cFF0000: '#FF0000',
 };
 
 

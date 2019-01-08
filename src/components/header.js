@@ -37,7 +37,9 @@ class Header extends Component<Props> {
                     <Image source={IC_DRAWER} resizeMode={'contain'}
                            style={styles.backIcon}/>
                 </TouchableOpacity>
-                <Text style={BaseStyle.s18c000000}>{text}</Text>
+                <View style={styles.text}>
+                    <Text style={BaseStyle.s18c000000}>{text}</Text>
+                </View>
             </View>
         );
     }
@@ -79,12 +81,16 @@ const styles = StyleSheet.create({
         borderBottomColor: Color.cD9D9D9,
         borderBottomWidth: 1,
     },
+    text: {
+        flex: 1,
+        marginRight: 44,
+        alignItems: 'center',
+    },
     navBtn: {
         height: 44,
         width: 44,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 10,
     },
     backIcon: {
         width: 35,
