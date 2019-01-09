@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import BaseStyle from "../../lib/baseStyle";
-import  Color from '../../lib/color';
+import Color from '../../lib/color';
 import PropTypes from 'prop-types';
 import _ from "lodash";
 
 export default class NewsCcomponent extends Component {
 
     static propTypes = {
+        index: PropTypes.number,
         url: PropTypes.string,
         title: PropTypes.string,
         onPress: PropTypes.func,
     };
 
     static defaultProps = {
+        index: 0,
         url: '',
         title: '',
         onPress: null,
@@ -24,11 +26,14 @@ export default class NewsCcomponent extends Component {
     }
 
     render() {
-        const {url, title, onPress} = this.props;
+        const {index, url, title, onPress} = this.props;
 
         return (
             <TouchableOpacity onPress={onPress}>
-                <View style={styles.item}>
+                <View style={[styles.item, {
+                    borderTopWidth: index === 0 ? 0 : 1,
+                    borderTopColor: index === 0 ? Color.cFFFFFF : Color.cD9D9D9
+                }]}>
                     <Image style={styles.icon}
                            resizeMode={'cover'}
                            source={{uri: url}}/>
@@ -45,8 +50,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: 15,
         paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: Color.cD9D9D9,
     },
 
     icon: {

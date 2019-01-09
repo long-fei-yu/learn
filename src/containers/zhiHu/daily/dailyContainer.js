@@ -136,6 +136,7 @@ export default class DailyContainer extends BaseComponent {
                                             return (
                                                 <View key={data + index}>
                                                     <NewsCcomponent
+                                                        index={index}
                                                         url={data.images[0]}
                                                         title={data.title}
                                                         onPress={this.onPress.bind(this, data.id)}/>

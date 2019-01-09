@@ -83,7 +83,7 @@ export default class DailyDetailContainer extends BaseComponent {
                         data={type === 'long' ? longData : shortData}
                         renderItem={({item, index}) => <ShortItem author={item.author} avatar={item.avatar}
                                                                   content={item.content} time={item.time}
-                                                                  reply_to={item.reply_to}/>}
+                                                                  reply_to={item.reply_to} index={index}/>}
                     />
 
 
@@ -97,6 +97,7 @@ export default class DailyDetailContainer extends BaseComponent {
 class ShortItem extends Component {
 
     static propTypes = {
+        index: PropTypes.number,
         avatar: PropTypes.string,
         author: PropTypes.string,
         content: PropTypes.string,
@@ -105,6 +106,7 @@ class ShortItem extends Component {
     };
 
     static defaultProps = {
+        index: 0,
         avatar: '',
         author: '',
         content: '',
@@ -116,10 +118,13 @@ class ShortItem extends Component {
     }
 
     render() {
-        const {avatar, author, content, time, reply_to} = this.props;
+        const {index, avatar, author, content, time, reply_to} = this.props;
 
         return (
-            <View style={styles.short}>
+            <View style={[styles.short, {
+                borderTopWidth: index === 0 ? 0 : 1,
+                borderTopColor: index === 0 ? Color.cFFFFFF : Color.cD9D9D9
+            }]}>
                 <Image source={{uri: avatar}} style={styles.shortIcon}/>
                 <View style={BaseStyle.content}>
                     <Text style={[BaseStyle.s12c000000,]}>{author}</Text>
@@ -163,8 +168,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: 15,
         paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: Color.cD9D9D9,
     },
     shortIcon: {
         width: 50,

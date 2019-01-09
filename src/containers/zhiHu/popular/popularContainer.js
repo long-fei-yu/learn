@@ -42,6 +42,7 @@ export default class PopularContainer extends BaseComponent {
                     {
                         data.map((data, index) => {
                             return <NewsCcomponent key={data + index}
+                                                   index={index}
                                                    url={data.thumbnail}
                                                    title={data.title}
                                                    onPress={this.onPress.bind(this, data.news_id)}/>
