@@ -48,6 +48,7 @@ export default class NewsCcomponent extends Component {
 const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
+        height: 110,
         marginHorizontal: 15,
         paddingVertical: 15,
     },

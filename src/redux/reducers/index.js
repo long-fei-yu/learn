@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 
 import {menusReducer} from './menusReducer';
-import {dailyReducer} from './dailyReducer';
+import {dailyDetailReducer} from './dailyDetailReducer';
 
 const appReducer = combineReducers({
     menusReducer,
-    dailyReducer
+    dailyDetailReducer,
 });
 
 export {appReducer}

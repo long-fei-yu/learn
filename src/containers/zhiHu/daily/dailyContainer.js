@@ -11,14 +11,14 @@ import {URLS} from "../../../lib/urls";
 import _ from "lodash";
 import {formatDate} from '../../../lib/public';
 import {connect} from 'react-redux';
-import * as dailyAction from '../../../redux/actions/dailyAction';
+import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
 
 @connect(
-    state => ({}),
+    null,
     dispatch => (
         {
-            slide: title => {
-                dispatch(dailyAction.onSlide(title))
+            setId: id => {
+                dispatch(dailyDetailAction.setId(id))
             }
         }
     )
@@ -31,33 +31,46 @@ export default class DailyContainer extends BaseComponent {
             topStories: [],
             date: '',
             dataStories: [],
+            isShowTop: false,
+            topText: '',
+            dataHigh: [200],
         };
     }
 
     componentDidMount() {
-        let {dataStories} = this.state;
+        let {dataStories, dataHigh} = this.state;
         let copyStories = _.clone(dataStories);
+        let copyDataHigh = _.clone(dataHigh);
+        let length = copyDataHigh.length;
 
         Http.get({url: URLS.latest}, (res) => {
+            copyDataHigh.push(copyDataHigh[length - 1] + res.stories.length * 110);
+
             this.setState({
                 topStories: res.top_stories,
                 date: res.date,
                 dataStories: _.concat(copyStories, {
                     date: res.date,
-                    stories: res.stories
+                    stories: res.stories,
                 }),
+                dataHigh: copyDataHigh,
             });
         });
     }
 
     getBefore = () => {
-        let {date, dataStories} = this.state;
+        let {date, dataStories, dataHigh} = this.state;
         let copyStories = _.clone(dataStories);
+        let copyDataHigh = _.clone(dataHigh);
+        let length = copyDataHigh.length;
 
         Http.get({url: `${URLS.before + date}`}, (res) => {
+            copyDataHigh.push(copyDataHigh[length - 1] + res.stories.length * 110 + 40);
+
             this.setState({
                 date: res.date,
                 dataStories: _.concat(copyStories, res),
+                dataHigh: copyDataHigh,
             });
         });
     };
@@ -71,13 +84,12 @@ export default class DailyContainer extends BaseComponent {
     };
 
     onPress = (id) => {
-        this.push('DailyDetail', {id});
+        this.props.setId(id);
+        this.push('DailyDetail');
     };
 
     onContentScroll = e => {
-        let {dataStories} = this.state;
-
-        this.props.slide(this.strToWeeks(dataStories[dataStories.length - 1].date));
+        let {dataStories, dataHigh} = this.state;
 
         //滑动距离
         let offsetY = e.nativeEvent.contentOffset.y;
@@ -86,71 +98,106 @@ export default class DailyContainer extends BaseComponent {
         //scrollView高度
         let oriageScrollHeight = e.nativeEvent.layoutMeasurement.height;
 
-
         if (offsetY + oriageScrollHeight >= contentSizeHeight) {
             //滑动到底部
             this.getBefore();
         }
+
+        console.log('dataHigh', dataHigh);
+        for (let i = 0; i < dataHigh.length; i++) {
+            let j = (i === dataHigh.length - 1 ? dataHigh.length - 1 : i + 1);
+            if (offsetY > dataHigh[i] && offsetY < dataHigh[j]) {
+                this.setState(
+                    {
+                        isShowTop: true,
+                        topText: dataStories[i].date === formatDate(new Date(), 'yyyyMMdd') ? '今日新闻' : this.strToWeeks(dataStories[i].date),
+                    }
+                );
+                return;
+            } else {
+                this.setState(
+                    {
+                        isShowTop: false,
+                        topText: '',
+                    }
+                );
+            }
+        }
+    };
+
+    showTop = () => {
+        const {topText} = this.state;
+        return (
+            <View style={styles.time}>
+                <Text
+                    style={BaseStyle.s14cFFFFFF}>{topText}</Text>
+            </View>
+        )
     };
 
     render() {
-        const {topStories, dataStories} = this.state;
+        const {isShowTop, topStories, dataStories} = this.state;
 
         return (
-            <ScrollView style={BaseStyle.content}
-                        bounces={false}
-                        scrollEnabled={true}
-                        automaticallyAdjustContentInsets={false}
-                        scrollEventThrottle={10}
-                        onScroll={this.onContentScroll}>
+            <View style={BaseStyle.content}>
 
-                <View style={BaseStyle.container}>
+                {isShowTop && this.showTop()}
 
-                    <View style={styles.wrapper}>
-                        <Swiper height={200} paginationStyle={{bottom: 10}} index={0} autoplay={true}
-                                key={topStories.length}>
+                <ScrollView style={BaseStyle.content}
+                            bounces={false}
+                            scrollEnabled={true}
+                            automaticallyAdjustContentInsets={false}
+                            scrollEventThrottle={10}
+                            onScroll={this.onContentScroll}>
 
-                            {topStories.map((data, index) => {
+                    <View style={BaseStyle.container}>
+
+                        <View style={styles.wrapper}>
+                            <Swiper height={200} paginationStyle={{bottom: 10}} index={0} autoplay={true}
+                                    key={topStories.length}>
+
+                                {topStories.map((data, index) => {
+                                    return (
+                                        <View key={data + index}>
+                                            <Carousel
+                                                onPress={this.onPress.bind(this, data.id)}
+                                                title={data.title}
+                                                image={data.image}/>
+                                        </View>)
+                                })}
+                            </Swiper>
+                        </View>
+
+                        {
+                            dataStories.map((data, index) => {
                                 return (
                                     <View key={data + index}>
-                                        <Carousel
-                                            onPress={this.onPress.bind(this, data.id)}
-                                            title={data.title}
-                                            image={data.image}/>
-                                    </View>)
-                            })}
-                        </Swiper>
+                                        {data.date !== formatDate(new Date(), 'yyyyMMdd') ?
+                                            (<View style={styles.time}>
+                                                <Text
+                                                    style={BaseStyle.s14cFFFFFF}>{this.strToWeeks(data.date)}</Text>
+                                            </View>) : null}
+
+                                        {data.stories.map((data, index) => {
+                                                return (
+                                                    <View key={data + index}>
+                                                        <NewsCcomponent
+                                                            index={index}
+                                                            url={data.images[0]}
+                                                            title={data.title}
+                                                            onPress={this.onPress.bind(this, data.id)}/>
+                                                    </View>
+                                                )
+                                            }
+                                        )}
+                                    </View>
+                                )
+                            })
+                        }
+                        <View/>
                     </View>
-
-                    {
-                        dataStories.map((data, index) => {
-                            return (
-                                <View key={data + index}>
-                                    {data.date !== formatDate(new Date(), 'yyyyMMdd') ?
-                                        (<View style={styles.time}>
-                                            <Text
-                                                style={BaseStyle.s14cFFFFFF}>{this.strToWeeks(data.date)}</Text>
-                                        </View>) : null}
-
-                                    {data.stories.map((data, index) => {
-                                            return (
-                                                <View key={data + index}>
-                                                    <NewsCcomponent
-                                                        index={index}
-                                                        url={data.images[0]}
-                                                        title={data.title}
-                                                        onPress={this.onPress.bind(this, data.id)}/>
-                                                </View>
-                                            )
-                                        }
-                                    )}
-                                </View>
-                            )
-                        })
-                    }
-                    <View/>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         );
     }
 }

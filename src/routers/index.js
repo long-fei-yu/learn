@@ -190,7 +190,7 @@ const RootStack = createStackNavigator(
             screen: DailyDetailContainer,
             navigationOptions: ({navigation}) => (
                 {
-                    title: navigation.state.params.title,
+                    title: navigation.state.params && navigation.state.params.title,
                 }
             ),
         },

@@ -17,7 +17,16 @@ import {URLS} from "../../../lib/urls";
 import _ from "lodash";
 import PropTypes from 'prop-types';
 import Color from "../../../lib/color";
+import {connect} from 'react-redux';
 
+@connect(
+    state => (
+        {
+            dailyDetailReducer: state.dailyDetailReducer
+        }
+    ),
+    null
+)
 export default class DailyDetailContainer extends BaseComponent {
 
     constructor(props) {
@@ -26,17 +35,18 @@ export default class DailyDetailContainer extends BaseComponent {
             data: {},
             extraData: {},
         };
+        this.setParams({title: ''})
     }
 
     componentDidMount() {
-        Http.get({url: `${URLS.news + this.getRouteParams().id}`}, (res) => {
+        Http.get({url: `${URLS.news + this.props.dailyDetailReducer.id}`}, (res) => {
             this.setState({
                 data: res,
             });
             this.setParams({title: res.title})
         });
 
-        Http.get({url: `${URLS.storyExtra + this.getRouteParams().id}`}, (res) => {
+        Http.get({url: `${URLS.storyExtra + this.props.dailyDetailReducer.id}`}, (res) => {
             this.setState({
                 extraData: res,
             });

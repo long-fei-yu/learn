@@ -8,7 +8,19 @@ import {URLS} from "../../../lib/urls";
 import PropTypes from 'prop-types';
 import Color from "../../../lib/color";
 import {substrData} from '../../../lib/public';
+import {connect} from 'react-redux';
+import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
 
+@connect(
+    null,
+    dispatch => (
+        {
+            setId: id => {
+                dispatch(dailyDetailAction.setId(id));
+            }
+        }
+    )
+)
 export default class ColumnDetailContainer extends BaseComponent {
 
     constructor(props) {
@@ -30,7 +42,8 @@ export default class ColumnDetailContainer extends BaseComponent {
     }
 
     onPress = (id) => {
-        this.navigate('DailyDetail', {id});
+        this.props.setId(id);
+        this.navigate('DailyDetail');
     };
 
     render() {

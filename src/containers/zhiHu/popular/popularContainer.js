@@ -5,8 +5,19 @@ import BaseStyle from "../../../lib/baseStyle";
 import Http from '../../../lib/http';
 import {URLS} from '../../../lib/urls';
 import NewsCcomponent from '../newsCcomponent';
+import {connect} from 'react-redux';
+import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
 
-
+@connect(
+    null,
+    dispatch => (
+        {
+            setId: id => {
+                dispatch(dailyDetailAction.setId(id));
+            }
+        }
+    )
+)
 export default class PopularContainer extends BaseComponent {
 
     constructor(props) {
@@ -26,7 +37,8 @@ export default class PopularContainer extends BaseComponent {
     }
 
     onPress = (id) => {
-        this.push('DailyDetail', {id});
+        this.props.setId(id);
+        this.push('DailyDetail');
     };
 
     render() {
