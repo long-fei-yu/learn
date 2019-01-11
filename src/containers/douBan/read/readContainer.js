@@ -8,12 +8,17 @@ export default class ReadContainer extends BaseComponent {
     render() {
         return (
             <SafeAreaView style={BaseStyle.container}>
-                <View style={BaseStyle.content}>
-                    <Text>Welcome to React ReadContainer!</Text>
+                <View style={[BaseStyle.content, styles.theme]}>
+                    <Text style={BaseStyle.s18c000000}>敬请期待</Text>
                 </View>
             </SafeAreaView>
         );
     }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    theme: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+});

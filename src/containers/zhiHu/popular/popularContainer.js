@@ -4,7 +4,7 @@ import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
 import Http from '../../../lib/http';
 import {URLS} from '../../../lib/urls';
-import NewsCcomponent from '../newsCcomponent';
+import NewsComponent from '../newsComponent';
 import {connect} from 'react-redux';
 import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
 
@@ -53,11 +53,11 @@ export default class PopularContainer extends BaseComponent {
                             scrollEventThrottle={10}>
                     {
                         data.map((data, index) => {
-                            return <NewsCcomponent key={data + index}
-                                                   index={index}
-                                                   url={data.thumbnail}
-                                                   title={data.title}
-                                                   onPress={this.onPress.bind(this, data.news_id)}/>
+                            return <NewsComponent key={data + index}
+                                                  index={index}
+                                                  url={data.thumbnail}
+                                                  title={data.title}
+                                                  onPress={this.onPress.bind(this, data.news_id)}/>
                         })
                     }
                 </ScrollView>

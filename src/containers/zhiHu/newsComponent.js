@@ -5,7 +5,7 @@ import Color from '../../lib/color';
 import PropTypes from 'prop-types';
 import _ from "lodash";
 
-export default class NewsCcomponent extends Component {
+export default class NewsComponent extends Component {
 
     static propTypes = {
         index: PropTypes.number,

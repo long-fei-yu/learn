@@ -53,6 +53,9 @@ import HomeContainer from '../containers/douBan/home/homeContainer';
 
 //电影
 import MovieContainer from '../containers/douBan/movie/movieContainer';
+//豆瓣Top250
+import MovieTop250Container from '../containers/douBan/movie/movieTop250Container';
+
 
 //电影详情
 import MovieDetailsContainer from '../containers/douBan/movie/movieDetailsContainer';
@@ -207,6 +210,9 @@ const RootStack = createStackNavigator(
                     title: navigation.state.params.title,
                 }
             )
+        },
+        MovieTop250: {
+            screen: MovieTop250Container,
         },
         MovieDetails: {
             screen: MovieDetailsContainer,

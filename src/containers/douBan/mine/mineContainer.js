@@ -1,14 +1,48 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, ImageBackground, ScrollView} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    SafeAreaView,
+    TouchableOpacity,
+    Image,
+    ImageBackground,
+    ScrollView,
+    Animated
+} from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
 import Color from "../../../lib/color";
+import Dimen from '../../../lib/dimen';
 import _ from "lodash";
 import PropTypes from 'prop-types';
+import Swiper from "react-native-swiper";
+import {mineData} from './mineData';
 
 export default class MineContainer extends BaseComponent {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            index: 0,
+            distance: new Animated.Value(15),
+        }
+    }
+
+    onTitleClick = (index) => {
+        Animated.timing(this.state.distance, {
+            toValue: index * 60 + 15,
+            duration: 300,
+        }).start();
+
+        this.setState({
+            index,
+        })
+    };
+
     render() {
+        const {index, distance} = this.state;
+
         return (
             <SafeAreaView style={BaseStyle.container}>
                 <ScrollView style={BaseStyle.content}>
@@ -65,7 +99,58 @@ export default class MineContainer extends BaseComponent {
                         <View style={styles.my}>
                             <Text style={BaseStyle.s18c000000}>我的书影音</Text>
                         </View>
-                        <View style={styles.myContent}/>
+
+                        <View>
+
+                            <View style={styles.title}>
+
+                                <TouchableOpacity style={styles.titleItem} onPress={this.onTitleClick.bind(this, 0)}>
+                                    <Text
+                                        style={{
+                                            color: index === 0 ? Color.c333333 : Color.c999999,
+                                            fontSize: index === 0 ? Dimen.s14 : Dimen.s12
+                                        }}>影视</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.titleItem} onPress={this.onTitleClick.bind(this, 1)}>
+                                    <Text
+                                        style={{
+                                            color: index === 1 ? Color.c333333 : Color.c999999,
+                                            fontSize: index === 1 ? Dimen.s14 : Dimen.s12
+                                        }}>图书</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.titleItem} onPress={this.onTitleClick.bind(this, 2)}>
+                                    <Text
+                                        style={{
+                                            color: index === 2 ? Color.c333333 : Color.c999999,
+                                            fontSize: index === 2 ? Dimen.s14 : Dimen.s12
+                                        }}>音乐</Text>
+                                </TouchableOpacity>
+
+                            </View>
+
+                            <Animated.View style={[styles.titleInterval, {marginLeft: distance}]}/>
+
+                            <View style={styles.myContent}>
+                                <Swiper height={80} index={0} showsPagination={false}
+                                        key={mineData.subject.length}
+                                        loop={false}
+                                        onIndexChanged={(index) => {
+                                            console.log('index', index);
+                                            this.onTitleClick(index)
+                                        }}>
+
+                                    {mineData.subject.map((data, index) => {
+                                        return (
+                                            <View key={data + index} style={styles.subject}>
+                                                <ItemsPage interests={data.interests}/>
+                                            </View>)
+                                    })}
+                                </Swiper>
+                            </View>
+                        </View>
+
 
                         <View style={styles.interval}/>
 
@@ -143,6 +228,77 @@ class Options extends Component {
                 <Image style={styles.icon} source={icon}/>
                 <Text style={[BaseStyle.s16c333333, styles.text]}>{text}</Text>
                 <Image style={styles.right} source={require('../../../images/douBan/mine/ic_forum_arrow_right.png')}/>
+            </TouchableOpacity>
+        );
+    }
+}
+
+class ItemsPage extends Component {
+
+    static propTypes = {
+        interests: PropTypes.array,
+    };
+
+    static defaultProps = {
+        interests: [],
+    };
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return !(_.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState));
+    }
+
+    render() {
+        const {interests} = this.props;
+
+        return (
+            <View style={styles.itemsPage}>
+                {
+                    interests.map((interest, index) => {
+                        return <Items key={interest + index} {...interest}/>
+                    })
+                }
+
+            </View>
+        );
+    }
+}
+
+class Items extends Component {
+
+    static propTypes = {
+        cover_url: PropTypes.string,
+        status_cn: PropTypes.string,
+        count: PropTypes.number,
+        onPress: PropTypes.func,
+        type: PropTypes.string,
+    };
+
+    static defaultProps = {
+        cover_url: '',
+        status_cn: '',
+        count: 0,
+        onPress: null,
+        type: '',
+    };
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return !(_.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState));
+    }
+
+    render() {
+        const {cover_url, status_cn, count, onPress, type} = this.props;
+
+        return (
+            <TouchableOpacity style={styles.items} onPress={onPress}>
+                {cover_url ? <Image style={styles.itemsIcon} source={{uri: cover_url}}/> :
+                    <Image style={styles.itemsIcon}
+                           source={type === 'movie' ? require('../../../images/douBan/mine/bg_videos_stack_default.png') :
+                               type === 'book' ? require('../../../images/douBan/mine/bg_books_stack_default.png') :
+                                   require('../../../images/douBan/mine/bg_music_stack_default.png')}/>}
+
+                <Text style={BaseStyle.s12c333333}>{status_cn}
+                    <Text style={BaseStyle.s10c333333}>{count}</Text>
+                </Text>
             </TouchableOpacity>
         );
     }
@@ -264,10 +420,48 @@ const styles = StyleSheet.create({
     },
 
     myContent: {
-        height: 150,
-        borderTopWidth: 1,
-        borderTopColor: Color.cF5F5F5,
-
+        height: 80,
+        marginVertical: 10,
     },
+
+    title: {
+        flexDirection: 'row',
+        height: 40,
+        borderBottomColor: Color.cD9D9D9,
+        borderBottomWidth: 1,
+    },
+
+    titleItem: {
+        width: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    titleInterval: {
+        width: 25,
+        height: 2,
+        marginTop: -2,
+        backgroundColor: Color.c191919,
+    },
+
+    items: {
+        width: 100,
+        alignItems: 'center',
+    },
+
+    itemsIcon: {
+        width: 60,
+        height: 60,
+        marginBottom: 5
+    },
+
+    itemsPage: {
+        flexDirection: 'row',
+    },
+
+    subject: {
+        justifyContent: 'center',
+    }
+
 
 });

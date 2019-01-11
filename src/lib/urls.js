@@ -32,6 +32,10 @@ export const URLS = {
      * 豆瓣电影API文档：https://www.jianshu.com/p/a7e51129b042
      */
 
+       // * 全：https://api.douban.com/v2/movie/top250?apikey=0b2bdeda43b5688921839c8ecb20399b&city=%E5%8C%97%E4%BA%AC&start=0&count=100&client=&udid=
+
+
+    top250: `${COMMON.douban}v2/movie/top250`,                       //Top250
 };
 
 

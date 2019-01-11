@@ -5,7 +5,7 @@ import BaseStyle from "../../../lib/baseStyle";
 import Color from '../../../lib/color';
 import Swiper from 'react-native-swiper';
 import PropTypes from 'prop-types';
-import NewsCcomponent from '../newsCcomponent';
+import NewsComponent from '../newsComponent';
 import Http from "../../../lib/http";
 import {URLS} from "../../../lib/urls";
 import _ from "lodash";
@@ -181,7 +181,7 @@ export default class DailyContainer extends BaseComponent {
                                         {data.stories.map((data, index) => {
                                                 return (
                                                     <View key={data + index}>
-                                                        <NewsCcomponent
+                                                        <NewsComponent
                                                             index={index}
                                                             url={data.images[0]}
                                                             title={data.title}

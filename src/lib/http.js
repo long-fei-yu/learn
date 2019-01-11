@@ -1,8 +1,6 @@
 let token = '';
 
-const SUCCESS_CODE = 0;//成功
-const TIMEOUT_CODE = 1;//连接超时
-const ERROR_CODE = 2;//连接错误
+const apikey = '0b2bdeda43b5688921839c8ecb20399b';
 
 export default class HttpUtil {
 
@@ -41,9 +39,47 @@ export default class HttpUtil {
     static async get(options, successCallback, errorCallBack) {
         const params = Object.assign({}, options.param);
         let str = '';
-        for (let param in params) {
-            str += `${i}=${param[i]}&`;
+        for (let key in params) {
+            str += `${key}=${params[key]}&`;
         }
+        str = str.substr(0, str.length - 1);
+
+        let result;
+
+        try {
+            result = await fetch(`${options.url}?${str}`, {method: 'GET'})
+                .then((response) => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        errorCallBack && errorCallBack(response);
+                    }
+                })
+                .catch((error) => {
+                    errorCallBack && errorCallBack(error);
+                });
+        } catch (error) {
+            errorCallBack && errorCallBack(error);
+        }
+
+        console.log('url:', options.url);
+        console.log('result:', result);
+
+        if (result) {
+            successCallback && successCallback(result);
+        }
+    }
+
+
+    static async getDouBan(options, successCallback, errorCallBack) {
+        const params = Object.assign({}, {apikey: '0b2bdeda43b5688921839c8ecb20399b', city: '北京'}, options.param);
+
+        let str = '';
+        for (let key in params) {
+            str += `${key}=${params[key]}&`;
+        }
+        str = str.substr(0, str.length - 1);
+
         let result;
 
         try {
