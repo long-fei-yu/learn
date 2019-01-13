@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, ImageBackground, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, FlatList, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
 import Color from '../../../lib/color';
@@ -13,21 +13,64 @@ export default class MovieTop250Container extends BaseComponent {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            subjects: [],
+            total: 0,
+            count: 10,
+            start: 0,
+        }
     }
 
     componentDidMount() {
 
-        Http.getDouBan({url: URLS.top250, param: {start: 0, count: 10, client: '', udid: '111'}}, (res) => {
+        Http.getDouBan({url: URLS.top250, param: {start: 0, count: 10, client: '', udid: ''}}, (res) => {
+            this.setState({
+                subjects: res.subjects,
+                total: res.total,
+                count: res.count,
+                start: res.start,
+            });
         });
-        
     }
 
+    showMovieInfo = (item) => {
+
+        let res = ' ';
+        for (let genre of item.genres) {
+            res += `${genre} `;
+        }
+
+        for (let cast of item.casts) {
+            res += ` ${cast.name} /`;
+        }
+
+        return res.substr(0, res.length - 1);
+    };
+
+    onPress = () => {
+        this.push('MovieDetails');
+    };
+
     render() {
+        const {subjects} = this.state;
+
         return (
             <SafeAreaView style={BaseStyle.container}>
                 <ScrollView style={BaseStyle.content}>
 
-                    <Text>束带结发副书记</Text>
+                    <FlatList
+                        keyExtractor={(item, index) => item + index}
+                        data={subjects}
+                        renderItem={({item, index}) => <Top250Item number={1} uri={item.images.small}
+                                                                   has_video={item.has_video}
+                                                                   title={item.title} year={item.year}
+                                                                   average={item.rating.average}
+                                                                   movieInfo={this.showMovieInfo(item)}
+                                                                   index={index}
+                                                                   stars={item.rating.stars / 10}
+                                                                   onPress={this.onPress.bind(this, item)}/>}
+                    />
 
                 </ScrollView>
             </SafeAreaView>
@@ -43,8 +86,10 @@ class Top250Item extends Component {
         has_video: PropTypes.bool,
         title: PropTypes.string,
         year: PropTypes.string,
-        average: PropTypes.string,
+        average: PropTypes.number,
         movieInfo: PropTypes.string,
+        index: PropTypes.number,
+        stars: PropTypes.number,
         onPress: PropTypes.func,
     };
 
@@ -54,8 +99,10 @@ class Top250Item extends Component {
         has_video: true,
         title: '',
         year: '',
-        average: '',
+        average: 0,
         movieInfo: '',
+        index: 0,
+        stars: 0,
         onPress: null,
     };
 
@@ -64,10 +111,13 @@ class Top250Item extends Component {
     }
 
     render() {
-        const {number, uri, has_video, title, year, average, movieInfo, onPress} = this.props;
+        const {number, uri, has_video, title, year, average, movieInfo, index, stars, onPress} = this.props;
 
         return (
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={onPress} style={[styles.top, {
+                borderTopWidth: index === 0 ? 0 : 10,
+                borderTopColor: index === 0 ? Color.cFFFFFF : Color.cD9D9D9
+            }]}>
 
                 <View style={styles.topNo}>
                     <Text style={BaseStyle.s14c93611F}>{`No.${number}`}</Text>
@@ -86,9 +136,18 @@ class Top250Item extends Component {
                                 <Text style={BaseStyle.s14c999999}>{`(${year})`}</Text>
                             </Text>
                         </View>
-                        <Text style={[BaseStyle.s10c999999, styles.movieScore]}>{average}</Text>
 
-                        <Text style={BaseStyle.s14c999999}>{movieInfo}</Text>
+                        <View style={styles.starScore}>
+                            {[1, 2, 3, 4, 5].map((data, index) => {
+                                return ( <Image key={data + index} style={styles.starIcon}
+                                                resizeMode={'cover'}
+                                                source={index < stars ? require('../../../images/douBan/movie/rating_star_xxsmall_on.png') :
+                                                    require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                )
+                            })}
+                            <Text style={[BaseStyle.s10c999999, styles.score]}>{average}</Text>
+                        </View>
+                        <Text style={BaseStyle.s12c999999}>{movieInfo}</Text>
 
                     </View>
 
@@ -101,7 +160,6 @@ class Top250Item extends Component {
                     </View>
                 </View>
 
-
             </TouchableOpacity>
         )
     }
@@ -113,6 +171,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
 
+
+    top: {
+        paddingHorizontal: 15,
+        paddingTop: 10,
+    },
 
     topNo: {
         backgroundColor: Color.cF6C77E,
@@ -129,9 +192,8 @@ const styles = StyleSheet.create({
     },
 
     movieIcon: {
-        width: 70,
-        height: 90,
-        backgroundColor: '#ff0000'
+        width: 80,
+        height: 100,
     },
 
     movieInfo: {
@@ -148,9 +210,19 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
 
-    movieScore: {
+    starScore: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginVertical: 5,
-        marginLeft: 15,
+    },
+
+    score: {
+        marginLeft: 5,
+    },
+
+    starIcon: {
+        width: 15,
+        height: 15,
     },
 
     interval: {
