@@ -15,6 +15,12 @@ const color = {
     cF6C77E: '#F6C77E',
     c93611F: '#93611F',
     cD8D8D8: '#D8D8D8',
+    cEDEDED: '#EDEDED',
+    cABABAE: '#ABABAE',
+    c382018: '#382018',
+    cF1AE4B: '#F1AE4B',
+    c412B24: '#412B24',
+    c4F3B34: '#4F3B34',
 };
 
 

@@ -1,4 +1,4 @@
-export const ID = 'id';
+export const ID = 'dailyId';
 
 export const setId = (id) => {
     return {

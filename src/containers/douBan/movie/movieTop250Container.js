@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, FlatList, ScrollView} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    SafeAreaView,
+    Image,
+    FlatList,
+    ScrollView,
+    ImageBackground
+} from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
 import Color from '../../../lib/color';
@@ -7,9 +17,20 @@ import _ from "lodash";
 import PropTypes from 'prop-types';
 import Http from '../../../lib/http';
 import {URLS} from "../../../lib/urls";
+import {connect} from 'react-redux';
+import * as movieDetailsAction from '../../../redux/actions/movieDetailsAction';
 
+@connect(
+    null,
+    dispatch => (
+        {
+            setMovieId: id => {
+                dispatch(movieDetailsAction.setMovieId(id));
+            }
+        }
+    )
+)
 export default class MovieTop250Container extends BaseComponent {
-
 
     constructor(props) {
         super(props);
@@ -24,7 +45,7 @@ export default class MovieTop250Container extends BaseComponent {
 
     componentDidMount() {
 
-        Http.getDouBan({url: URLS.top250, param: {start: 0, count: 10, client: '', udid: ''}}, (res) => {
+        Http.getDouBan({url: URLS.top250, param: {start: 0, count: 10, client: '', udid: ''}}, res => {
             this.setState({
                 subjects: res.subjects,
                 total: res.total,
@@ -48,7 +69,8 @@ export default class MovieTop250Container extends BaseComponent {
         return res.substr(0, res.length - 1);
     };
 
-    onPress = () => {
+    onPress = (item) => {
+        this.props.setMovieId(item.id);
         this.push('MovieDetails');
     };
 
@@ -58,6 +80,21 @@ export default class MovieTop250Container extends BaseComponent {
         return (
             <SafeAreaView style={BaseStyle.container}>
                 <ScrollView style={BaseStyle.content}>
+
+                    <ImageBackground style={styles.head}
+                                     resizeMode={'cover'}
+                                     source={{uri: 'https://img3.doubanio.com/img/files/file-1543564940.png'}}>
+
+                        <Image style={styles.headIcon}
+                               source={{uri: 'https://img3.doubanio.com/img/roboport/files/file-movie_top250-big_cover.png'}}
+                               resizeMode={'cover'}/>
+
+                        <View>
+                            <Text style={BaseStyle.s18cFFFFFF}>豆瓣电影 Top250</Text>
+                            <Text style={[BaseStyle.s12cABABAE, styles.headText]}>豆瓣榜单 . 共250部</Text>
+                        </View>
+
+                    </ImageBackground>
 
                     <FlatList
                         keyExtractor={(item, index) => item + index}
@@ -116,7 +153,7 @@ class Top250Item extends Component {
         return (
             <TouchableOpacity onPress={onPress} style={[styles.top, {
                 borderTopWidth: index === 0 ? 0 : 10,
-                borderTopColor: index === 0 ? Color.cFFFFFF : Color.cD9D9D9
+                borderTopColor: index === 0 ? Color.cFFFFFF : Color.cEDEDED
             }]}>
 
                 <View style={styles.topNo}>
@@ -139,10 +176,10 @@ class Top250Item extends Component {
 
                         <View style={styles.starScore}>
                             {[1, 2, 3, 4, 5].map((data, index) => {
-                                return ( <Image key={data + index} style={styles.starIcon}
-                                                resizeMode={'cover'}
-                                                source={index < stars ? require('../../../images/douBan/movie/rating_star_xxsmall_on.png') :
-                                                    require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                return (<Image key={data + index} style={styles.starIcon}
+                                               resizeMode={'cover'}
+                                               source={index < stars ? require('../../../images/douBan/movie/rating_star_xxsmall_on.png') :
+                                                   require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
                                 )
                             })}
                             <Text style={[BaseStyle.s10c999999, styles.score]}>{average}</Text>
@@ -171,6 +208,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
 
+
+    head: {
+        flexDirection: 'row',
+        height: 140,
+        width: deviceParameter.pw,
+        alignItems: 'center',
+        paddingHorizontal: 15,
+    },
+
+    headIcon: {
+        width: 80,
+        height: 80,
+        marginRight: 15,
+    },
+
+    headText: {
+        marginTop: 5,
+    },
 
     top: {
         paddingHorizontal: 15,

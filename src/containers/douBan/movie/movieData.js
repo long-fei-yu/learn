@@ -108,19 +108,22 @@ export const movieData = {
                             pic: 'https://img3.doubanio.com/view/photo/m_ratio_poster/public/p1910813120.jpg',
                             title: '霸王别姬',
                             value: 9.6,
-                            star_count: 5
+                            star_count: 5,
+                            id: '1291546',
                         },
                         {
                             pic: 'https://img3.doubanio.com/view/photo/m_ratio_poster/public/p510861873.jpg',
                             title: '美丽人生',
                             value: 9.5,
-                            star_count: 5
+                            star_count: 5,
+                            id: '1292063',
                         },
                         {
                             pic: 'https://img1.doubanio.com/view/photo/m_ratio_poster/public/p510876377.jpg',
                             title: '阿甘正传',
                             value: 9.4,
-                            star_count: 5
+                            star_count: 5,
+                            id: '1292720',
                         },
                     ]
                 },
@@ -131,19 +134,22 @@ export const movieData = {
                             pic: 'https://img3.doubanio.com/view/photo/m_ratio_poster/public/p579729551.jpg',
                             title: '三傻大闹宝莱坞',
                             value: 9.2,
-                            star_count: 5
+                            star_count: 5,
+                            id: '3793023',
                         },
                         {
                             pic: 'https://img3.doubanio.com/view/photo/m_ratio_poster/public/p2455050536.jpg',
                             title: '大话西游之大圣娶亲',
                             value: 9.2,
-                            star_count: 5
+                            star_count: 5,
+                            id: '1292213',
                         },
                         {
                             pic: 'https://img3.doubanio.com/view/photo/m_ratio_poster/public/p1454261925.jpg',
                             title: '触不可及',
                             value: 9.2,
-                            star_count: 5
+                            star_count: 5,
+                            id: '6786002',
                         },
                     ]
                 },

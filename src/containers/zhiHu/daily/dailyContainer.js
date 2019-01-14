@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
 import Color from '../../../lib/color';

@@ -5,7 +5,19 @@ import BaseStyle from "../../../lib/baseStyle";
 import _ from "lodash";
 import PropTypes from 'prop-types';
 import {movieData} from './movieData';
+import {connect} from 'react-redux';
+import * as movieDetailsAction from "../../../redux/actions/movieDetailsAction";
 
+@connect(
+    null,
+    dispatch => (
+        {
+            setMovieId: id => {
+                dispatch(movieDetailsAction.setMovieId(id));
+            }
+        }
+    )
+)
 export default class MovieContainer extends BaseComponent {
 
     onRankingClick = id => {
@@ -23,6 +35,11 @@ export default class MovieContainer extends BaseComponent {
                 break;
         }
 
+    };
+
+    onMoviePress = (id) => {
+        this.props.setMovieId(id);
+        this.push('MovieDetails');
     };
 
     render() {
@@ -76,7 +93,8 @@ export default class MovieContainer extends BaseComponent {
                                         </TouchableOpacity>
                                         <View style={styles.yearRankingContent}>
                                             {obj.items.map((item, index) => <Movie key={item + index} {...item}
-                                                                                   index={index}/>)}
+                                                                                   index={index}
+                                                                                   onPress={this.onMoviePress.bind(this, item.id)}/>)}
                                         </View>
                                     </View>
                                 )
