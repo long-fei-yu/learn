@@ -12,6 +12,7 @@ import _ from "lodash";
 import {formatDate} from '../../../lib/public';
 import {connect} from 'react-redux';
 import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
+import {loadingRef} from '../../../app';
 
 @connect(
     null,
@@ -43,7 +44,10 @@ export default class DailyContainer extends BaseComponent {
         let copyDataHigh = _.clone(dataHigh);
         let length = copyDataHigh.length;
 
+        loadingRef.showLoading();
         Http.get({url: URLS.latest}, (res) => {
+            loadingRef.hideLoading();
+
             copyDataHigh.push(copyDataHigh[length - 1] + res.stories.length * 110);
 
             this.setState({
@@ -129,8 +133,9 @@ export default class DailyContainer extends BaseComponent {
         const {topText} = this.state;
         return (
             <View style={styles.time}>
-                <Text
-                    style={BaseStyle.s14cFFFFFF}>{topText}</Text>
+                <Text style={BaseStyle.s14cFFFFFF}>
+                    {topText}
+                </Text>
             </View>
         )
     };

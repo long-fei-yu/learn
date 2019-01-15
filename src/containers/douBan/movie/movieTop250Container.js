@@ -6,8 +6,6 @@ import {
     TouchableOpacity,
     SafeAreaView,
     Image,
-    FlatList,
-    ScrollView,
     ImageBackground
 } from 'react-native';
 import BaseComponent from '../../baseComponent';
@@ -19,6 +17,9 @@ import Http from '../../../lib/http';
 import {URLS} from "../../../lib/urls";
 import {connect} from 'react-redux';
 import * as movieDetailsAction from '../../../redux/actions/movieDetailsAction';
+import RefreshFlatList from '../../../components/refreshFlatList';
+
+const PAGE_SIZE = 10;
 
 @connect(
     null,
@@ -36,27 +37,85 @@ export default class MovieTop250Container extends BaseComponent {
         super(props);
 
         this.state = {
-            subjects: [],
+            subjects: null,
             total: 0,
             count: 10,
             start: 0,
+            isRefreshing: false,
+            isLoading: false,
         }
     }
 
     componentDidMount() {
-
-        Http.getDouBan({url: URLS.top250, param: {start: 0, count: 10, client: '', udid: ''}}, res => {
-            this.setState({
-                subjects: res.subjects,
-                total: res.total,
-                count: res.count,
-                start: res.start,
-            });
-        });
+        this.onRefresh();
     }
 
-    showMovieInfo = (item) => {
+    getTop250 = page => {
+        Http.getDouBan({url: URLS.top250, param: {start: page, count: PAGE_SIZE, client: '', udid: ''}}, res => {
+            if (page == 0) {
+                this.onRefreshEnd(res);
+            } else {
+                this.onLoadMoreEnd(res);
+            }
+        });
+    };
 
+    onRefresh = () => {
+        this.setState({
+            isRefreshing: true
+        });
+        this.getTop250(0);
+    };
+
+    onRefreshEnd = (res) => {
+        this.setState({
+            subjects: res.subjects,
+            total: res.total,
+            count: res.count,
+            start: res.start,
+            isRefreshing: false
+        });
+    };
+
+    onLoadMore = (page) => {
+        this.setState({
+            isLoading: true
+        });
+        this.getTop250(page);
+    };
+
+    onLoadMoreEnd = (res) => {
+        let subjectArr = _.clone(this.state.subjects);
+
+        this.setState({
+            subjects: _.concat(subjectArr, res.subjects),
+            total: res.total,
+            count: res.count,
+            start: res.start,
+            isLoading: false
+        });
+    };
+
+    renderHeader = () => {
+        return (
+            <ImageBackground style={styles.head}
+                             resizeMode={'cover'}
+                             source={{uri: 'https://img3.doubanio.com/img/files/file-1543564940.png'}}>
+
+                <Image style={styles.headIcon}
+                       source={{uri: 'https://img3.doubanio.com/img/roboport/files/file-movie_top250-big_cover.png'}}
+                       resizeMode={'cover'}/>
+
+                <View>
+                    <Text style={BaseStyle.s18cFFFFFF}>豆瓣电影 Top250</Text>
+                    <Text style={[BaseStyle.s12cABABAE, styles.headText]}>豆瓣榜单 . 共250部</Text>
+                </View>
+
+            </ImageBackground>
+        )
+    };
+
+    showMovieInfo = (item) => {
         let res = ' ';
         for (let genre of item.genres) {
             res += `${genre} `;
@@ -75,41 +134,28 @@ export default class MovieTop250Container extends BaseComponent {
     };
 
     render() {
-        const {subjects} = this.state;
+        const {subjects, total, isRefreshing, isLoading} = this.state;
 
         return (
             <SafeAreaView style={BaseStyle.container}>
-                <ScrollView style={BaseStyle.content}>
-
-                    <ImageBackground style={styles.head}
-                                     resizeMode={'cover'}
-                                     source={{uri: 'https://img3.doubanio.com/img/files/file-1543564940.png'}}>
-
-                        <Image style={styles.headIcon}
-                               source={{uri: 'https://img3.doubanio.com/img/roboport/files/file-movie_top250-big_cover.png'}}
-                               resizeMode={'cover'}/>
-
-                        <View>
-                            <Text style={BaseStyle.s18cFFFFFF}>豆瓣电影 Top250</Text>
-                            <Text style={[BaseStyle.s12cABABAE, styles.headText]}>豆瓣榜单 . 共250部</Text>
-                        </View>
-
-                    </ImageBackground>
-
-                    <FlatList
-                        keyExtractor={(item, index) => item + index}
-                        data={subjects}
-                        renderItem={({item, index}) => <Top250Item number={1} uri={item.images.small}
-                                                                   has_video={item.has_video}
-                                                                   title={item.title} year={item.year}
-                                                                   average={item.rating.average}
-                                                                   movieInfo={this.showMovieInfo(item)}
-                                                                   index={index}
-                                                                   stars={item.rating.stars / 10}
-                                                                   onPress={this.onPress.bind(this, item)}/>}
-                    />
-
-                </ScrollView>
+                <RefreshFlatList
+                    data={subjects}
+                    onRefresh={this.onRefresh}
+                    onLoadMore={this.onLoadMore}
+                    renderHeader={this.renderHeader()}
+                    total={total}
+                    isRefreshing={isRefreshing}
+                    isLoading={isLoading}
+                    renderItem={({item, index}) => <Top250Item number={index + 1}
+                                                               uri={item.images.small}
+                                                               has_video={item.has_video}
+                                                               title={item.title} year={item.year}
+                                                               average={item.rating.average}
+                                                               movieInfo={this.showMovieInfo(item)}
+                                                               index={index}
+                                                               stars={item.rating.stars / 10}
+                                                               onPress={this.onPress.bind(this, item)}/>}
+                />
             </SafeAreaView>
         );
     }
@@ -157,7 +203,7 @@ class Top250Item extends Component {
             }]}>
 
                 <View style={styles.topNo}>
-                    <Text style={BaseStyle.s14c93611F}>{`No.${number}`}</Text>
+                    <Text style={[BaseStyle.s14c93611F, styles.topNoText]}>{`No.${number}`}</Text>
                 </View>
 
                 <View style={styles.topContent}>
@@ -233,12 +279,15 @@ const styles = StyleSheet.create({
     },
 
     topNo: {
-        backgroundColor: Color.cF6C77E,
-        width: 40,
-        height: 20,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5
+        alignItems: 'flex-start',
+    },
+
+    topNoText: {
+        backgroundColor: Color.cF6C77E,
+        borderRadius: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 2,
     },
 
     topContent: {
