@@ -12,6 +12,7 @@ export default class Loading extends Component {
         this.state = {
             text: '',
             zIndex: new Animated.Value(-99),
+            loadOpacity: new Animated.Value(0),
         };
 
         this.showLoading = this.showLoading.bind(this);
@@ -23,23 +24,43 @@ export default class Loading extends Component {
             text,
         });
 
-        Animated.timing(
-            this.state.zIndex,
-            {
-                toValue: 99,
-                duration: 300,
-            }
-        ).start();
+        Animated.parallel([
+            Animated.timing(
+                this.state.zIndex,
+                {
+                    toValue: 99,
+                    duration: 200,
+                }
+            ),
+            Animated.timing(
+                this.state.loadOpacity,
+                {
+                    toValue: 1,
+                    duration: 100,
+                    useNativeDriver: true,  //启用原生动画驱动
+                }
+            )
+        ]).start();
     };
 
     hideLoading = () => {
-        Animated.timing(
-            this.state.zIndex,
-            {
-                toValue: -99,
-                duration: 300,
-            }
-        ).start();
+        Animated.parallel([
+            Animated.timing(
+                this.state.zIndex,
+                {
+                    toValue: -99,
+                    duration: 200,
+                }
+            ),
+            Animated.timing(
+                this.state.loadOpacity,
+                {
+                    toValue: 0,
+                    duration: 100,
+                    useNativeDriver: true,  //启用原生动画驱动
+                }
+            )
+        ]).start();
     };
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -47,19 +68,23 @@ export default class Loading extends Component {
     }
 
     render() {
-        const {text, zIndex} = this.state;
+        const {text, zIndex, loadOpacity} = this.state;
 
         return (
-            <Animated.View style={[styles.content, {zIndex}]}>
-                <ActivityIndicator size="small" color={Color.cFFFFFF} style={styles.load}/>
-                <Text style={BaseStyle.s12cFFFFFF}>{text}</Text>
+            <Animated.View style={[styles.container, {zIndex}]}>
+
+                <Animated.View style={[styles.content, {opacity: loadOpacity}]}>
+                    <ActivityIndicator size="small" color={Color.cFFFFFF} style={styles.load}/>
+                    <Text style={BaseStyle.s12cFFFFFF}>{text}</Text>
+                </Animated.View>
             </Animated.View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    content: {
+
+    container: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -67,7 +92,14 @@ const styles = StyleSheet.create({
         height: deviceParameter.ph,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+    },
+
+    content: {
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0,0,0,0.6)',
     },
 
     load: {

@@ -1,9 +1,12 @@
+import {loadingRef} from "../app";
+
 let token = '';
 
 const apikey = '0b2bdeda43b5688921839c8ecb20399b';
 
 export default class HttpUtil {
 
+    static requestNumber = 0;  //请求数量
 
     static post() {
 
@@ -46,6 +49,12 @@ export default class HttpUtil {
 
         let result;
 
+        //loading为false表示显示加载框，为true表示不显示加载框
+        let loading = options.loading || false;
+        if (!loading) {
+            loadingRef.showLoading();
+        }
+
         try {
             result = await fetch(`${options.url}?${str}`, {method: 'GET'})
                 .then((response) => {
@@ -60,6 +69,10 @@ export default class HttpUtil {
                 });
         } catch (error) {
             errorCallBack && errorCallBack(error);
+        }
+
+        if (!loading) {
+            loadingRef.hideLoading();
         }
 
         console.log('url:', options.url);
@@ -82,6 +95,12 @@ export default class HttpUtil {
 
         let result;
 
+        //loading为false表示显示加载框，为true表示不显示加载框
+        let loading = options.loading || false;
+        if (!loading) {
+            loadingRef.showLoading();
+        }
+
         try {
             result = await fetch(`${options.url}?${str}`, {method: 'GET'})
                 .then((response) => {
@@ -96,6 +115,10 @@ export default class HttpUtil {
                 });
         } catch (error) {
             errorCallBack && errorCallBack(error);
+        }
+
+        if (!loading) {
+            loadingRef.hideLoading();
         }
 
         console.log('url:', options.url);

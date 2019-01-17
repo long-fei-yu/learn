@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ImageBackground} from 'react-native';
 import BaseComponent from '../baseComponent';
 import BaseStyle from '../../lib/baseStyle';
+import NativeUtil from '../../lib/native';
 
 export default class SplashContainer extends BaseComponent {
 
@@ -11,6 +12,9 @@ export default class SplashContainer extends BaseComponent {
     }
 
     componentDidMount() {
+
+        //NativeUtil.hideSplash();
+
         this.countInterval = setInterval(() => {
             let {count} = this.state;
             if (count <= 0) {
