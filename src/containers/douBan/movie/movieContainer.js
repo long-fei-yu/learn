@@ -274,7 +274,8 @@ class Movie extends Component {
                                     return (
                                         <Image
                                             key={arr + index}
-                                            source={arr <= star_count ? require('../../../images/douBan/movie/rating_star_xxsmall_on.png') : require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}
+                                            source={arr <= star_count ? require('../../../images/douBan/movie/rating_star_small_on.png') :
+                                                require('../../../images/douBan/movie/rating_star_small_off.png')}
                                             style={styles.movieLevel}
                                             resizeMode={'center'}/>
                                     )

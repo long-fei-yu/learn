@@ -56,6 +56,8 @@ import MovieContainer from '../containers/douBan/movie/movieContainer';
 //豆瓣Top250
 import MovieTop250Container from '../containers/douBan/movie/movieTop250Container';
 
+//电影搜索结果
+import SearchResultsContainer from '../containers/douBan/search/searchResultsContainer';
 
 //电影详情
 import MovieDetailsContainer from '../containers/douBan/movie/movieDetailsContainer';
@@ -218,6 +220,12 @@ const RootStack = createStackNavigator(
             screen: MovieDetailsContainer,
             navigationOptions: {
                 title: '电影详情',
+            }
+        },
+        SearchResults: {
+            screen: SearchResultsContainer,
+            navigationOptions: {
+                title: '电影搜索',
             }
         },
 

@@ -41,6 +41,7 @@ export default class MovieTop250Container extends BaseComponent {
             total: 0,
             count: 10,
             start: 0,
+
             isRefreshing: false,
             isLoading: false,
         }
@@ -224,8 +225,8 @@ class Top250Item extends Component {
                             {[1, 2, 3, 4, 5].map((data, index) => {
                                 return (<Image key={data + index} style={styles.starIcon}
                                                resizeMode={'cover'}
-                                               source={index < stars ? require('../../../images/douBan/movie/rating_star_xxsmall_on.png') :
-                                                   require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                               source={index < stars ? require('../../../images/douBan/movie/rating_star_small_on.png') :
+                                                   require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                 )
                             })}
                             <Text style={[BaseStyle.s10c999999, styles.score]}>{average}</Text>

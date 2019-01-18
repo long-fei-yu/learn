@@ -75,7 +75,7 @@ export default class HttpUtil {
             loadingRef.hideLoading();
         }
 
-        console.log('url:', options.url);
+        console.log('url:', `${options.url}?${str}`);
         console.log('result:', result);
 
         if (result) {
@@ -121,7 +121,7 @@ export default class HttpUtil {
             loadingRef.hideLoading();
         }
 
-        console.log('url:', options.url);
+        console.log('url:', `${options.url}?${str}`);
         console.log('result:', result);
 
         if (result) {

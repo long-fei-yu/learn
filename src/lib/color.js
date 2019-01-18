@@ -21,6 +21,11 @@ const color = {
     cF1AE4B: '#F1AE4B',
     c412B24: '#412B24',
     c4F3B34: '#4F3B34',
+    c6CB962: '#6CB962',
+    cC0C0C0: '#C0C0C0',
+    cF7F7F7: '#F7F7F7',
+    cEBF6EB: '#EBF6EB',
+    cEC7D86: '#EC7D86',
 };
 
 

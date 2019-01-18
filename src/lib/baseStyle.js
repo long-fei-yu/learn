@@ -121,9 +121,14 @@ const styles = StyleSheet.create({
         color: Color.cFFFFFF,
     },
 
-    s30FFFFFF: {
+    s30cFFFFFF: {
         fontSize: Dimen.s30,
         color: Color.cFFFFFF,
+    },
+
+    s12cEC7D86: {
+        fontSize: Dimen.s12,
+        color: Color.cEC7D86,
     },
 
 });

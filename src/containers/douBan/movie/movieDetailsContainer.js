@@ -118,13 +118,14 @@ export default class MovieDetailsContainer extends BaseComponent {
 
                             <View style={styles.scoreContent}>
                                 <View style={styles.scorePoints}>
-                                    <Text style={BaseStyle.s30FFFFFF}>{data.rating && data.rating.average}</Text>
+                                    <Text style={BaseStyle.s30cFFFFFF}>{data.rating && data.rating.average}</Text>
                                     <View style={styles.starScore}>
                                         {data.rating && [1, 2, 3, 4, 5].map((obj, index) => {
                                             return (<Image key={obj + index} style={styles.starIcon}
                                                            resizeMode={'cover'}
-                                                           source={index < (data.rating.stars / 10) ? require('../../../images/douBan/movie/rating_star_xxsmall_on.png') :
-                                                               require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                                           source={index < (data.rating.stars / 10) ?
+                                                               require('../../../images/douBan/movie/rating_star_small_on.png') :
+                                                               require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                             )
                                         })}
                                     </View>
@@ -136,7 +137,7 @@ export default class MovieDetailsContainer extends BaseComponent {
                                                 {[1, 2, 3, 4, 5].map((obj, index) => {
                                                     return (<Image key={obj + index} style={styles.starIcon}
                                                                    resizeMode={'cover'}
-                                                                   source={require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                                                   source={require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                                     )
                                                 })}
                                             </View>
@@ -151,7 +152,7 @@ export default class MovieDetailsContainer extends BaseComponent {
                                                 {[1, 2, 3, 4].map((obj, index) => {
                                                     return (<Image key={obj + index} style={styles.starIcon}
                                                                    resizeMode={'cover'}
-                                                                   source={require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                                                   source={require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                                     )
                                                 })}
                                             </View>
@@ -166,7 +167,7 @@ export default class MovieDetailsContainer extends BaseComponent {
                                                 {[1, 2, 3].map((obj, index) => {
                                                     return (<Image key={obj + index} style={styles.starIcon}
                                                                    resizeMode={'cover'}
-                                                                   source={require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                                                   source={require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                                     )
                                                 })}
                                             </View>
@@ -181,7 +182,7 @@ export default class MovieDetailsContainer extends BaseComponent {
                                                 {[1, 2].map((obj, index) => {
                                                     return (<Image key={obj + index} style={styles.starIcon}
                                                                    resizeMode={'cover'}
-                                                                   source={require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                                                   source={require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                                     )
                                                 })}
                                             </View>
@@ -196,7 +197,7 @@ export default class MovieDetailsContainer extends BaseComponent {
                                                 {[1].map((obj, index) => {
                                                     return (<Image key={obj + index} style={styles.starIcon}
                                                                    resizeMode={'cover'}
-                                                                   source={require('../../../images/douBan/movie/rating_star_xxsmall_off.png')}/>
+                                                                   source={require('../../../images/douBan/movie/rating_star_small_off.png')}/>
                                                     )
                                                 })}
                                             </View>
