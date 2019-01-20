@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image} from 'react-native';
 import BaseComponent from '../baseComponent';
 import BaseStyle from '../../lib/baseStyle';
-import {Header} from "../../components/header";
+import {Header} from '../../components/header';
 import PropTypes from 'prop-types';
 import Color from '../../lib/color';
 

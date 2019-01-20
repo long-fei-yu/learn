@@ -11,12 +11,12 @@ import {
     Animated
 } from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
-import Color from "../../../lib/color";
+import BaseStyle from '../../../lib/baseStyle';
+import Color from '../../../lib/color';
 import Dimen from '../../../lib/dimen';
-import _ from "lodash";
+import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Swiper from "react-native-swiper";
+import Swiper from 'react-native-swiper';
 import {mineData} from './mineData';
 
 export default class MineContainer extends BaseComponent {

@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet, SafeAreaView, Image, TextInput, TouchableOpacity} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
+import BaseStyle from '../../../lib/baseStyle';
 import Color from '../../../lib/color';
-import Dimen from "../../../lib/dimen";
+import Dimen from '../../../lib/dimen';
 import SearchComponent from '../search/searchComponent';
 import HomeContentComponent from './homeContentComponent';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import BaseComponent from '../baseComponent';
 import BaseStyle from '../../lib/baseStyle';
-import {Header} from "../../components/header";
+import {Header} from '../../components/header';
 import Color from '../../lib/color';
 
 export default class AboutContainer extends BaseComponent {

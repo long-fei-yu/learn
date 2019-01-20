@@ -13,7 +13,7 @@ import {createAppContainer} from 'react-navigation';
 import {Provider} from 'react-redux';
 import {store} from './redux/store/index';
 import {View} from 'react-native';
-import BaseStyle from "./lib/baseStyle";
+import BaseStyle from './lib/baseStyle';
 import Loading from './components/loading';
 
 const AppContainer = createAppContainer(AppNavigator);

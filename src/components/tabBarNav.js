@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, SafeAreaView, Animated} from 'react-native';
 import BaseStyle from '../lib/baseStyle';
 import {Header} from '../components/header';
-import Color from "../lib/color";
+import Color from '../lib/color';
 
 export default class TabBarNav extends Component<Props> {
 

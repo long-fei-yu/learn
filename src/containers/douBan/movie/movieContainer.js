@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image, ImageBackground, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
-import _ from "lodash";
+import BaseStyle from '../../../lib/baseStyle';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import {movieData} from './movieData';
 import {connect} from 'react-redux';
-import * as movieDetailsAction from "../../../redux/actions/movieDetailsAction";
+import * as movieDetailsAction from '../../../redux/actions/movieDetailsAction';
 
 @connect(
     null,
@@ -107,8 +107,7 @@ export default class MovieContainer extends BaseComponent {
                     </View>
                 </ScrollView>
             </SafeAreaView>
-        )
-            ;
+        );
     }
 }
 

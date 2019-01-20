@@ -11,12 +11,12 @@ import {
     Image
 } from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
-import Http from "../../../lib/http";
-import {URLS} from "../../../lib/urls";
-import _ from "lodash";
+import BaseStyle from '../../../lib/baseStyle';
+import Http from '../../../lib/http';
+import {URLS} from '../../../lib/urls';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Color from "../../../lib/color";
+import Color from '../../../lib/color';
 import {connect} from 'react-redux';
 
 @connect(

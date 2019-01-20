@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {TouchableOpacity, Image, StyleSheet, View, Text} from 'react-native';
 import PropTypes from 'prop-types';
-import BaseStyle from "../lib/baseStyle";
+import BaseStyle from '../lib/baseStyle';
 import Color from '../lib/color';
 
 const IC_DRAWER = require('../images/components/ic_drawer.png');

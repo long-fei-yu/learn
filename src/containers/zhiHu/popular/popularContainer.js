@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
+import BaseStyle from '../../../lib/baseStyle';
 import Http from '../../../lib/http';
 import {URLS} from '../../../lib/urls';
 import NewsComponent from '../newsComponent';

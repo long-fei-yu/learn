@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, Animated, TouchableOpacity, SafeAreaView} from 'react-native';
-import BaseStyle from "../../../lib/baseStyle";
+import {View, Text, StyleSheet, Image, Animated, TouchableOpacity} from 'react-native';
+import BaseStyle from '../../../lib/baseStyle';
 import Color from '../../../lib/color';
-import _ from "lodash";
-import Dimen from "../../../lib/dimen";
+import _ from 'lodash';
+import Dimen from '../../../lib/dimen';
 import RefreshFlatList from '../../../components/refreshFlatList';
-import Http from "../../../lib/http";
-import {URLS} from "../../../lib/urls";
-import PropTypes from "prop-types";
+import Http from '../../../lib/http';
+import {URLS} from '../../../lib/urls';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as movieDetailsAction from "../../../redux/actions/movieDetailsAction";
+import * as movieDetailsAction from '../../../redux/actions/movieDetailsAction';
 import {withNavigation} from 'react-navigation';
 
 const PAGE_SIZE = 10;

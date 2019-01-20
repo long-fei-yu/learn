@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import BaseStyle from "../../../lib/baseStyle";
+import BaseStyle from '../../../lib/baseStyle';
 import Color from '../../../lib/color';
-import _ from "lodash";
+import _ from 'lodash';
 
 export default class SearchComponent extends Component {
 

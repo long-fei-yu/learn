@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
-import _ from "lodash";
+import BaseStyle from '../../../lib/baseStyle';
+import _ from 'lodash';
 import http from '../../../lib/http';
-import {URLS} from "../../../lib/urls";
+import {URLS} from '../../../lib/urls';
 import PropTypes from 'prop-types';
-import Color from "../../../lib/color";
+import Color from '../../../lib/color';
 
 export default class ColumnContainer extends BaseComponent {
 

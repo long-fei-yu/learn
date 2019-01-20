@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import _ from "lodash";
+import _ from 'lodash';
 import {View, FlatList, Text, StyleSheet} from 'react-native';
-import BaseStyle from "../lib/baseStyle";
+import BaseStyle from '../lib/baseStyle';
 
 export default class RefreshFlatList extends Component {
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import _ from "lodash";
-import {View, ActivityIndicator, StyleSheet, Text, Animated} from 'react-native';
+import _ from 'lodash';
+import {ActivityIndicator, StyleSheet, Text, Animated} from 'react-native';
 import Color from '../lib/color';
 import BaseStyle from '../lib/baseStyle';
 

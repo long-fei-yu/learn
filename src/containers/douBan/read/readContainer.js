@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
+import BaseStyle from '../../../lib/baseStyle';
 
 export default class ReadContainer extends BaseComponent {
 

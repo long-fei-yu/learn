@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ImageBackground, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
+import BaseStyle from '../../../lib/baseStyle';
 import Color from '../../../lib/color';
 import Swiper from 'react-native-swiper';
 import PropTypes from 'prop-types';
 import NewsComponent from '../newsComponent';
-import Http from "../../../lib/http";
-import {URLS} from "../../../lib/urls";
-import _ from "lodash";
+import Http from '../../../lib/http';
+import {URLS} from '../../../lib/urls';
+import _ from 'lodash';
 import {formatDate} from '../../../lib/public';
 import {connect} from 'react-redux';
 import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
