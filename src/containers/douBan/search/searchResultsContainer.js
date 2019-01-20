@@ -9,6 +9,7 @@ import _ from "lodash";
 import RefreshFlatList from "../../../components/refreshFlatList";
 import {connect} from 'react-redux';
 import * as movieDetailsAction from "../../../redux/actions/movieDetailsAction";
+import Color from '../../../lib/color';
 
 const PAGE_SIZE = 10;
 
@@ -139,6 +140,7 @@ export default class SearchResultsContainer extends BaseComponent {
                         total={total}
                         isRefreshing={isRefreshing}
                         isLoading={isLoading}
+                        renderSeparator={() => <View style={styles.separator}/>}
                         renderItem={({item, index}) => <SearchItem uri={item.images.small}
                                                                    subtype={this.showSubtypeTitle(item.subtype)}
                                                                    has_video={item.has_video}
@@ -244,4 +246,10 @@ const styles = StyleSheet.create({
     movieName: {
         paddingRight: 5,
     },
+
+    separator: {
+        height: 0.5,
+        marginHorizontal: 15,
+        backgroundColor: Color.cEDEDED,
+    }
 });

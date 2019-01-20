@@ -14,7 +14,7 @@ export default class RefreshFlatList extends Component {
         renderEmpty: PropTypes.object,
         renderHeader: PropTypes.object,
         renderFooter: PropTypes.object,
-        renderSeparator: PropTypes.object,
+        renderSeparator: PropTypes.func,
 
         onRefresh: PropTypes.func,
         onLoadMore: PropTypes.func,
@@ -55,7 +55,7 @@ export default class RefreshFlatList extends Component {
         isLoading: false,
 
         // 数据总量
-        total: 100,
+        total: 0,
     };
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -123,6 +123,7 @@ export default class RefreshFlatList extends Component {
                 ) : null}
                 {data && data.length > 0 ? (
                     <FlatList
+                        {...this.props}
                         keyExtractor={(item, index) => item + index}
                         data={data}
                         extraData={extraData}
@@ -151,9 +152,9 @@ export class MoreView extends Component {
     };
     static defaultProps = {
         /*
-        hasMore 可加载更多
-        noMore 没有更多
-        loading 加载中
+         hasMore 可加载更多
+         noMore 没有更多
+         loading 加载中
          */
         loadMoreStatus: 'hasMore',
         // 加载文本

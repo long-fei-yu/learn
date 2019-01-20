@@ -147,13 +147,13 @@ export default class MovieTop250Container extends BaseComponent {
                     total={total}
                     isRefreshing={isRefreshing}
                     isLoading={isLoading}
+                    renderSeparator={() => <View style={styles.separator}/>}
                     renderItem={({item, index}) => <Top250Item number={index + 1}
                                                                uri={item.images.small}
                                                                has_video={item.has_video}
                                                                title={item.title} year={item.year}
                                                                average={item.rating.average}
                                                                movieInfo={this.showMovieInfo(item)}
-                                                               index={index}
                                                                stars={item.rating.stars / 10}
                                                                onPress={this.onPress.bind(this, item)}/>}
                 />
@@ -172,7 +172,6 @@ class Top250Item extends Component {
         year: PropTypes.string,
         average: PropTypes.number,
         movieInfo: PropTypes.string,
-        index: PropTypes.number,
         stars: PropTypes.number,
         onPress: PropTypes.func,
     };
@@ -185,7 +184,6 @@ class Top250Item extends Component {
         year: '',
         average: 0,
         movieInfo: '',
-        index: 0,
         stars: 0,
         onPress: null,
     };
@@ -195,13 +193,10 @@ class Top250Item extends Component {
     }
 
     render() {
-        const {number, uri, has_video, title, year, average, movieInfo, index, stars, onPress} = this.props;
+        const {number, uri, has_video, title, year, average, movieInfo, stars, onPress} = this.props;
 
         return (
-            <TouchableOpacity onPress={onPress} style={[styles.top, {
-                borderTopWidth: index === 0 ? 0 : 10,
-                borderTopColor: index === 0 ? Color.cFFFFFF : Color.cEDEDED
-            }]}>
+            <TouchableOpacity onPress={onPress} style={styles.top}>
 
                 <View style={styles.topNo}>
                     <Text style={[BaseStyle.s14c93611F, styles.topNoText]}>{`No.${number}`}</Text>
@@ -352,6 +347,11 @@ const styles = StyleSheet.create({
         width: 15,
         height: 15,
         marginBottom: 5,
+    },
+
+    separator: {
+        height: 10,
+        backgroundColor: Color.cEDEDED,
     }
 });
 

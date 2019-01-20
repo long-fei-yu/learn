@@ -202,7 +202,7 @@ class HomeContentComponent extends Component {
                     total={total}
                     isRefreshing={isRefreshing}
                     isLoading={isLoading}
-                    ItemSeparatorComponent
+                    renderSeparator={() => <View style={styles.separator}/>}
                     renderItem={({item, index}) => <InTheatersItem
                         uri={item.images.small}
                         title={item.title} stars={item.rating.stars / 10} average={item.rating.average}
@@ -211,13 +211,10 @@ class HomeContentComponent extends Component {
                         onTicketPress={this.onTicketPress.bind(this, item)}
                     />}
                 />
-
-
             </View>
         );
     }
 }
-
 
 class InTheatersItem extends Component {
 
@@ -364,6 +361,12 @@ const styles = StyleSheet.create({
         width: 50,
         height: 22,
         marginBottom: 5,
+    },
+
+    separator: {
+        height: 0.5,
+        marginHorizontal: 15,
+        backgroundColor: Color.cEDEDED,
     }
 });
 

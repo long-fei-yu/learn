@@ -55,8 +55,8 @@ export default class ColumnDetailContainer extends BaseComponent {
                     <FlatList
                         keyExtractor={(item, index) => item + index}
                         data={data.stories}
+                        ItemSeparatorComponent={() => <View style={styles.separator}/>}
                         renderItem={({item, index}) => <ColumnDetailItem images={item.images[0]}
-                                                                         index={index}
                                                                          date={item.date}
                                                                          onPress={this.onPress.bind(this, item.id)}
                                                                          title={item.title}/>}
@@ -70,7 +70,6 @@ export default class ColumnDetailContainer extends BaseComponent {
 class ColumnDetailItem extends Component {
 
     static propTypes = {
-        index: PropTypes.number,
         title: PropTypes.string,
         images: PropTypes.string,
         date: PropTypes.string,
@@ -78,7 +77,6 @@ class ColumnDetailItem extends Component {
     };
 
     static defaultProps = {
-        index: 0,
         title: '',
         images: '',
         date: '',
@@ -90,14 +88,11 @@ class ColumnDetailItem extends Component {
     }
 
     render() {
-        const {index, title, images, date, onPress} = this.props;
+        const {title, images, date, onPress} = this.props;
 
         return (
             <TouchableOpacity onPress={onPress}>
-                <View style={[styles.item, {
-                    borderTopWidth: index === 0 ? 0 : 1,
-                    borderTopColor: index === 0 ? Color.cFFFFFF : Color.cD9D9D9
-                }]}>
+                <View style={styles.item}>
                     <Image source={{uri: images}} style={styles.icon} resizeMode={'cover'}/>
                     <View style={styles.right}>
                         <Text style={BaseStyle.s16c333333} ellipsizeMode={'tail'} numberOfLines={2}>{title}</Text>
@@ -132,6 +127,12 @@ const styles = StyleSheet.create({
 
     data: {
         alignSelf: 'flex-end'
+    },
+
+    separator: {
+        height: 1,
+        marginHorizontal: 15,
+        backgroundColor: Color.cD9D9D9,
     }
 });
 
