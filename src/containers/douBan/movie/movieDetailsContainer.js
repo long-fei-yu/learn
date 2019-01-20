@@ -298,7 +298,9 @@ export default class MovieDetailsContainer extends BaseComponent {
                     </View>
                 </ScrollView>
 
-                <MovieCommentsComponent/>
+                <View style={styles.comments}>
+                    <MovieCommentsComponent id={this.props.movieDetailsReducer.id}/>
+                </View>
             </SafeAreaView>
         );
     }
@@ -469,5 +471,13 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
 
+    //
+    comments: {
+        position: 'absolute',
+        top: deviceParameter.ph - 160,
+        left: 0,
+        width: deviceParameter.pw,
+        backgroundColor: Color.cFFFFFF,
+    },
 });
 
