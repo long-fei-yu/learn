@@ -2,11 +2,13 @@ import React from 'react';
 import {View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
-import HttpUtil from "../../../lib/http";
-import {URLS} from "../../../lib/urls";
 import Color from '../../../lib/color';
 import _ from "lodash";
 import {connect} from 'react-redux';
+import HttpUtil from '../../../lib/http';
+import {URLS} from "../../../lib/urls";
+
+const PAGE_SIZE = 10;
 
 @connect(
     state => (
@@ -27,6 +29,15 @@ export default class MovieDetailsContainer extends BaseComponent {
 
     componentDidMount() {
 
+        this.getMovieDetails();
+        this.getMovieReviews(0);
+        this.getMovieComments(0);
+    }
+
+    /**
+     * 电影详情
+     */
+    getMovieDetails = () => {
         HttpUtil.getDouBan({
             url: URLS.subject + this.props.movieDetailsReducer.id,
             param: {client: '', udid: ''}
@@ -35,7 +46,33 @@ export default class MovieDetailsContainer extends BaseComponent {
                 data: res,
             })
         });
-    }
+    };
+
+    /**
+     * 电影条目长评
+     * @param page
+     */
+    getMovieReviews = page => {
+        HttpUtil.getDouBan({
+            url: URLS.subject + this.props.movieDetailsReducer.id + '/reviews',
+            param: {start: page, count: PAGE_SIZE, client: '', udid: ''}
+        }, res => {
+
+        });
+    };
+
+    /**
+     * 电影条目短评
+     * @param page
+     */
+    getMovieComments = page => {
+        HttpUtil.getDouBan({
+            url: URLS.subject + this.props.movieDetailsReducer.id + '/comments',
+            param: {start: page, count: PAGE_SIZE, client: '', udid: ''}
+        }, res => {
+
+        });
+    };
 
     showInfo = (data) => {
         let res = '';

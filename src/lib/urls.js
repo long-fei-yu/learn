@@ -35,9 +35,10 @@ export const URLS = {
 
     top250: `${COMMON.douban}v2/movie/top250`,                       //Top250
     subject: `${COMMON.douban}v2/movie/subject/`,                    //电影条目信息
-    in_theaters: `${COMMON.douban}v2/movie/in_theaters`,            //正在热映
-    coming_soon: `${COMMON.douban}v2/movie/coming_soon`,            //即将上映
-
-    search: `${COMMON.douban}v2/movie/search`,            //电影搜索
+    in_theaters: `${COMMON.douban}v2/movie/in_theaters`,             //正在热映
+    coming_soon: `${COMMON.douban}v2/movie/coming_soon`,             //即将上映
+    search: `${COMMON.douban}v2/movie/search`,                       //电影搜索
+    weekly: `${COMMON.douban}v2/movie/weekly`,                       //口碑榜
+    newMovies: `${COMMON.douban}v2/movie/new_movies`,                //新片榜
 
 };

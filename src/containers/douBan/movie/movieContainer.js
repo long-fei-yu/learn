@@ -25,9 +25,11 @@ export default class MovieContainer extends BaseComponent {
         switch (id) {
             case 'movie_weekly_best':
                 //口碑电影
+                this.push('MoviePraise');
                 break;
             case 'movie_hot_weekly':
-                //热门电影
+                //新电影
+                this.push('MovieNew');
                 break;
             case 'movie_top250':
                 //TOP250
@@ -145,7 +147,8 @@ class Ranking extends Component {
                         </View>
                         <View style={styles.rankingContent}>
                             {items.map((data, index) => {
-                                return <NameRank key={data + index} name={`${index}. ${data.title}`} score={data.value}
+                                return <NameRank key={data + index} name={`${index + 1}. ${data.title}`}
+                                                 score={data.value}
                                                  dynamic={data.trend}/>
                             })}
                         </View>

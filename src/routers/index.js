@@ -55,6 +55,10 @@ import HomeContainer from '../containers/douBan/home/homeContainer';
 import MovieContainer from '../containers/douBan/movie/movieContainer';
 //豆瓣Top250
 import MovieTop250Container from '../containers/douBan/movie/movieTop250Container';
+//口碑电影
+import MoviePraiseContainer from '../containers/douBan/movie/moviePraiseContainer';
+//新片榜
+import  MovieNewContainer from '../containers/douBan/movie/movieNewContainer';
 
 //电影搜索结果
 import SearchResultsContainer from '../containers/douBan/search/searchResultsContainer';
@@ -213,8 +217,14 @@ const RootStack = createStackNavigator(
                 }
             )
         },
+        MoviePraise: {
+            screen: MoviePraiseContainer,
+        },
         MovieTop250: {
             screen: MovieTop250Container,
+        },
+        MovieNew: {
+            screen: MovieNewContainer,
         },
         MovieDetails: {
             screen: MovieDetailsContainer,

@@ -8,6 +8,10 @@ export default class SearchComponent extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            recordData: ['周', '周杰', '周杰伦', '周杰伦周', '周杰伦周杰', '周杰伦周杰伦', '周杰伦周杰伦周'],
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -24,6 +28,7 @@ export default class SearchComponent extends Component {
     };
 
     render() {
+        const {recordData} = this.state;
 
         return (
             <View style={styles.content}>
@@ -38,7 +43,18 @@ export default class SearchComponent extends Component {
                         </View>
 
                         <View style={styles.history}>
-                            <Text style={[BaseStyle.s14c333333, styles.historyText]}>搜索记录</Text>
+
+                            {recordData.map((record, index) => {
+                                console.log('record.length', record.length);
+                                return (
+                                    <View key={record + index} style={[styles.historyText, {
+                                        width: record.length * 14 + 8,
+                                    }]}>
+                                        <Text
+                                            style={BaseStyle.s14c333333}>{record}</Text>
+                                    </View>
+                                )
+                            })}
                         </View>
                     </View>) : null
                 }
@@ -76,14 +92,19 @@ const styles = StyleSheet.create({
     },
 
     history: {
+        flexDirection: 'row',
         marginTop: 10,
-
+        flexWrap: 'wrap',
     },
 
     historyText: {
+        height: 25,
         backgroundColor: Color.cF7F7F7,
-        paddingHorizontal: 5,
-        paddingVertical: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+        marginBottom: 10,
+        borderRadius: 3,
     }
 
 });

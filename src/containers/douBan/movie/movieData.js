@@ -28,7 +28,7 @@ export const movieData = {
 
                 {
                     id: "movie_hot_weekly",
-                    short_name: "热门电影",
+                    short_name: "新电影",
                     header_bg_image: "https://img3.doubanio.com/view/photo/photo/public/p2509612683.jpg",
                     items: [
                         {

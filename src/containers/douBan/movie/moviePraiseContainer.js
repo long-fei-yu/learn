@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     SafeAreaView,
     Image,
-    ImageBackground
+    ImageBackground,
+    FlatList
 } from 'react-native';
 import BaseComponent from '../../baseComponent';
 import BaseStyle from "../../../lib/baseStyle";
@@ -17,9 +18,6 @@ import Http from '../../../lib/http';
 import {URLS} from "../../../lib/urls";
 import {connect} from 'react-redux';
 import * as movieDetailsAction from '../../../redux/actions/movieDetailsAction';
-import RefreshFlatList from '../../../components/refreshFlatList';
-
-const PAGE_SIZE = 10;
 
 @connect(
     null,
@@ -31,71 +29,25 @@ const PAGE_SIZE = 10;
         }
     )
 )
-export default class MovieTop250Container extends BaseComponent {
+export default class MoviePraiseContainer extends BaseComponent {
 
     constructor(props) {
         super(props);
 
         this.state = {
             subjects: null,
-            total: 0,
-            count: 10,
-            start: 0,
-
-            isRefreshing: false,
-            isLoading: false,
+            title: '',
         }
     }
 
     componentDidMount() {
-        this.onRefresh();
+        Http.getDouBan({url: URLS.weekly, param: {client: '', udid: ''}}, res => {
+            this.setState({
+                subjects: res.subjects,
+                title: res.title,
+            });
+        });
     }
-
-    getTop250 = page => {
-        Http.getDouBan({url: URLS.top250, param: {start: page, count: PAGE_SIZE, client: '', udid: ''}}, res => {
-            if (page == 0) {
-                this.onRefreshEnd(res);
-            } else {
-                this.onLoadMoreEnd(res);
-            }
-        });
-    };
-
-    onRefresh = () => {
-        this.setState({
-            isRefreshing: true
-        });
-        this.getTop250(0);
-    };
-
-    onRefreshEnd = (res) => {
-        this.setState({
-            subjects: res.subjects,
-            total: res.total,
-            count: res.count,
-            start: res.start,
-            isRefreshing: false
-        });
-    };
-
-    onLoadMore = (page) => {
-        this.setState({
-            isLoading: true
-        });
-        this.getTop250(page);
-    };
-
-    onLoadMoreEnd = (res) => {
-        let subjectArr = _.clone(this.state.subjects);
-
-        this.setState({
-            subjects: _.concat(subjectArr, res.subjects),
-            total: res.total,
-            count: res.count,
-            start: res.start,
-            isLoading: false
-        });
-    };
 
     renderHeader = () => {
         return (
@@ -108,8 +60,8 @@ export default class MovieTop250Container extends BaseComponent {
                        resizeMode={'cover'}/>
 
                 <View>
-                    <Text style={BaseStyle.s18cFFFFFF}>豆瓣电影 Top250</Text>
-                    <Text style={[BaseStyle.s12cABABAE, styles.headText]}>豆瓣榜单 . 共250部</Text>
+                    <Text style={BaseStyle.s18cFFFFFF}>一周口碑电影榜</Text>
+                    <Text style={[BaseStyle.s12cABABAE, styles.headText]}>每周五更新 . 共10部</Text>
                 </View>
 
             </ImageBackground>
@@ -137,56 +89,52 @@ export default class MovieTop250Container extends BaseComponent {
     };
 
     render() {
-        const {subjects, total, isRefreshing, isLoading} = this.state;
+        const {subjects} = this.state;
 
         return (
             <SafeAreaView style={BaseStyle.container}>
-                <RefreshFlatList
+                <FlatList
+                    keyExtractor={(item, index) => item + index}
                     data={subjects}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    renderHeader={this.renderHeader()}
-                    total={total}
-                    isRefreshing={isRefreshing}
-                    isLoading={isLoading}
-                    renderSeparator={() => <View style={styles.separator}/>}
-                    renderItem={({item, index}) => <Top250Item number={index + 1}
-                                                               uri={item.images.small}
-                                                               has_video={item.has_video}
-                                                               title={item.title} year={item.year}
-                                                               average={item.rating.average}
-                                                               movieInfo={this.showMovieInfo(item)}
-                                                               stars={item.rating.stars / 10}
-                                                               onPress={this.onPress.bind(this, item)}/>}
+                    ListHeaderComponent={this.renderHeader()}
+                    ItemSeparatorComponent={() => <View style={styles.separator}/>}
+                    renderItem={({item, index}) => <PraiseItem number={index + 1}
+                                                               uri={item.subject.images.small}
+                                                               title={item.subject.title} year={item.subject.year}
+                                                               average={item.subject.rating.average}
+                                                               movieInfo={this.showMovieInfo(item.subject)}
+                                                               stars={item.subject.rating.stars / 10}
+                                                               details={item.subject.rating.details}
+                                                               onPress={this.onPress.bind(this, item.subject)}/>}
                 />
             </SafeAreaView>
         );
     }
 }
 
-class Top250Item extends Component {
+class PraiseItem extends Component {
 
     static propTypes = {
         number: PropTypes.number,
         uri: PropTypes.string,
-        has_video: PropTypes.bool,
         title: PropTypes.string,
         year: PropTypes.string,
         average: PropTypes.number,
         movieInfo: PropTypes.string,
         stars: PropTypes.number,
+        details: PropTypes.object,
         onPress: PropTypes.func,
     };
 
     static defaultProps = {
         number: 1,
         uri: '',
-        has_video: true,
         title: '',
         year: '',
         average: 0,
         movieInfo: '',
         stars: 0,
+        details: [],
         onPress: null,
     };
 
@@ -195,7 +143,12 @@ class Top250Item extends Component {
     }
 
     render() {
-        const {number, uri, has_video, title, year, average, movieInfo, stars, onPress} = this.props;
+        const {number, uri, title, year, average, movieInfo, stars, details, onPress} = this.props;
+
+        let total = 0;
+        for (let key in details) {
+            total += details[key];
+        }
 
         return (
             <TouchableOpacity onPress={onPress} style={styles.top}>
@@ -211,8 +164,6 @@ class Top250Item extends Component {
 
                     <View style={styles.movieInfo}>
                         <View style={styles.movieNameYear}>
-                            {has_video && <Image style={styles.play} resizeMode={'center'}
-                                                 source={require('../../../images/douBan/movie/ic_can_play_17.png')}/>}
                             <Text style={[BaseStyle.s16c333333, styles.movieName]}>{title}
                                 <Text style={BaseStyle.s14c999999}>{`(${year})`}</Text>
                             </Text>
@@ -239,6 +190,10 @@ class Top250Item extends Component {
                                source={require('../../../images/douBan/movie/ic_info_wish.png')}/>
                         <Text style={BaseStyle.s14cF6C77E}>想看</Text>
                     </View>
+                </View>
+
+                <View style={styles.evaluation}>
+                    <Text style={BaseStyle.s12c999999}>{`${total}评价`}</Text>
                 </View>
 
             </TouchableOpacity>
@@ -309,7 +264,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     movieName: {
-        marginHorizontal: 5,
+        marginRight: 5,
     },
 
     starScore: {
@@ -333,11 +288,6 @@ const styles = StyleSheet.create({
         backgroundColor: Color.cD8D8D8,
     },
 
-    play: {
-        width: 15,
-        height: 15
-    },
-
     movieRight: {
         width: 60,
         height: 80,
@@ -354,6 +304,14 @@ const styles = StyleSheet.create({
     separator: {
         height: 10,
         backgroundColor: Color.cEDEDED,
+    },
+
+    evaluation: {
+        justifyContent: 'center',
+        height: 40,
+        backgroundColor: Color.cD9D9D9,
+        paddingLeft: 10,
+        marginBottom: 20,
     }
 });
 
