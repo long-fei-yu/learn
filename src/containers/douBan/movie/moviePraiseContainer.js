@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     evaluation: {
         justifyContent: 'center',
         height: 40,
-        backgroundColor: Color.cD9D9D9,
+        backgroundColor: Color.cF8F8F8,
         paddingLeft: 10,
         marginBottom: 20,
     }

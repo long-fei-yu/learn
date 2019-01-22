@@ -26,6 +26,7 @@ const color = {
     cF7F7F7: '#F7F7F7',
     cEBF6EB: '#EBF6EB',
     cEC7D86: '#EC7D86',
+    cF8F8F8: '#F8F8F8',
 };
 
 
