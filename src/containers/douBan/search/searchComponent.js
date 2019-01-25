@@ -3,24 +3,46 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import BaseStyle from '../../../lib/baseStyle';
 import Color from '../../../lib/color';
 import _ from 'lodash';
+import {keys, load, clear} from '../../../lib/storage';
+import {withNavigation} from 'react-navigation';
 
-export default class SearchComponent extends Component {
+class SearchComponent extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            recordData: ['周', '周杰', '周杰伦', '周杰伦周', '周杰伦周杰', '周杰伦周杰伦', '周杰伦周杰伦周'],
-        }
+            recordData: [],
+        };
+
+        this._loadHistory = props.navigation.addListener('didFocus', this.loadHistory);
     }
+
+    componentWillUnmount() {
+        this._loadHistory.remove();
+    }
+
+    loadHistory = async () => {
+        let value = await load(keys.history);
+
+        if (value) {
+            this.setState({
+                recordData: value.split(','),
+            });
+        }
+    };
 
     shouldComponentUpdate(nextProps, nextState) {
         return !(_.isEqual(this.props, nextProps) && _.isEqual(this.state, nextState));
     }
 
 
-    onDeletePress = () => {
+    onDeletePress = async () => {
+        await clear([keys.history]);
 
+        this.setState({
+            recordData: [],
+        });
     };
 
     onMorePress = () => {
@@ -45,7 +67,6 @@ export default class SearchComponent extends Component {
                         <View style={styles.history}>
 
                             {recordData.map((record, index) => {
-                                console.log('record.length', record.length);
                                 return (
                                     <View key={record + index} style={[styles.historyText, {
                                         width: record.length * 14 + 8,
@@ -108,3 +129,5 @@ const styles = StyleSheet.create({
     }
 
 });
+
+export default withNavigation(SearchComponent);

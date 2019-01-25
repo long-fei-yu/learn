@@ -1,43 +1,13 @@
 import {loadingRef} from "../app";
-
-let token = '';
-
-const apikey = '0b2bdeda43b5688921839c8ecb20399b';
+import fetch from './fetch';
 
 export default class HttpUtil {
 
-    static requestNumber = 0;  //请求数量
+    //豆瓣请求key
+    static apikey = '0b2bdeda43b5688921839c8ecb20399b';
 
-    static post() {
-
-        fetch('http://39.98.69.210:8080/admin/login', {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "username": "admin",
-                "password": "123456"
-            })
-        })
-            .then(response => {
-                console.log('response', response);
-                console.log('response._bodyText', response._bodyText);
-
-                let _bodyText = JSON.parse(response._bodyText);
-
-                console.log('_bodyText.data', _bodyText.data);
-                console.log('r_bodyText.data.token', _bodyText.data.token);
-                token = _bodyText.data.token;
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
-
-    }
-
+    //默认请求超时
+    static fetchTime = 25000;
 
     static async get(options, successCallback, errorCallBack) {
         const params = Object.assign({}, options.param);
@@ -55,8 +25,11 @@ export default class HttpUtil {
             loadingRef.showLoading();
         }
 
+        //超时时长
+        let timeout = options.timeout || HttpUtil.fetchTime;
+
         try {
-            result = await fetch(`${options.url}?${str}`, {method: 'GET'})
+            result = await fetch(`${options.url}?${str}`, {method: 'GET', timeout})
                 .then((response) => {
                     if (response.status === 200) {
                         return response.json();
@@ -85,7 +58,7 @@ export default class HttpUtil {
 
 
     static async getDouBan(options, successCallback, errorCallBack) {
-        const params = Object.assign({}, {apikey: '0b2bdeda43b5688921839c8ecb20399b', city: '北京'}, options.param);
+        const params = Object.assign({}, {apikey: HttpUtil.apikey, city: '北京'}, options.param);
 
         let str = '';
         for (let key in params) {
@@ -101,8 +74,11 @@ export default class HttpUtil {
             loadingRef.showLoading();
         }
 
+        //超时时长
+        let timeout = options.timeout || HttpUtil.fetchTime;
+
         try {
-            result = await fetch(`${options.url}?${str}`, {method: 'GET'})
+            result = await fetch(`${options.url}?${str}`, {method: 'GET', timeout})
                 .then((response) => {
                     if (response.status === 200) {
                         return response.json();

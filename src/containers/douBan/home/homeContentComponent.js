@@ -124,7 +124,7 @@ class HomeContentComponent extends Component {
             count: 10,
             start: 0,
             subjects: null,
-            total: 0,
+            total: 99,
             isRefreshing: false,
             isLoading: false,
         });

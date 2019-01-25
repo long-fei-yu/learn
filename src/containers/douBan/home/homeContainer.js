@@ -6,6 +6,7 @@ import Color from '../../../lib/color';
 import Dimen from '../../../lib/dimen';
 import SearchComponent from '../search/searchComponent';
 import HomeContentComponent from './homeContentComponent';
+import {keys, save, load} from '../../../lib/storage';
 
 export default class HomeContainer extends BaseComponent {
 
@@ -42,8 +43,23 @@ export default class HomeContainer extends BaseComponent {
         })
     };
 
-    onSubmitEditing = () => {
+    onSubmitEditing = async () => {
         const {text} = this.state;
+
+        if (text.length === 0) {
+            return;
+        }
+
+        let value = await load(keys.history);
+
+        if (!value) {
+            value = text;
+        } else {
+            value += ',' + text;
+        }
+
+        save(keys.history, value);
+
         this.push('SearchResults', {text});
     };
 
