@@ -24,8 +24,6 @@ export default class MovieCommentsComponent extends Component {
             index: 0,
             distance: new Animated.Value(15),
 
-            count: 10,
-            start: 0,
             commentData: null,
             total: 0,
             isRefreshing: false,
@@ -69,8 +67,6 @@ export default class MovieCommentsComponent extends Component {
         this.setState({
             commentData: index === 0 ? res.reviews : null,
             total: res.total,
-            count: res.count,
-            start: res.start,
             isRefreshing: false
         });
     };
@@ -92,8 +88,6 @@ export default class MovieCommentsComponent extends Component {
         this.setState({
             commentData: _.concat(commentArr, index === 0 ? res.reviews : null),
             total: res.total,
-            count: res.count,
-            start: res.start,
             isLoading: false
         });
     };
@@ -101,8 +95,6 @@ export default class MovieCommentsComponent extends Component {
     onSwitch = (index) => {
         this.setState({
             index,
-            count: 10,
-            start: 0,
             commentData: null,
             total: 0,
             isRefreshing: false,

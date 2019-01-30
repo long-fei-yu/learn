@@ -31,8 +31,6 @@ export default class SearchResultsContainer extends BaseComponent {
         this.state = {
             subjects: null,
             total: 0,
-            count: 10,
-            start: 0,
             title: '',
 
             isRefreshing: false,
@@ -69,8 +67,6 @@ export default class SearchResultsContainer extends BaseComponent {
         this.setState({
             subjects: res.subjects,
             total: res.total,
-            count: res.count,
-            start: res.start,
             title: res.title,
             isRefreshing: false
         });
@@ -89,8 +85,6 @@ export default class SearchResultsContainer extends BaseComponent {
         this.setState({
             subjects: _.concat(subjectArr, res.subjects),
             total: res.total,
-            count: res.count,
-            start: res.start,
             title: res.title,
             isLoading: false
         });

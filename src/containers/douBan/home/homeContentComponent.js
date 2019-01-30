@@ -36,8 +36,6 @@ class HomeContentComponent extends Component {
         this.state = {
             index: 1,
             distance: new Animated.Value(deviceParameter.pw / 5 + 10),
-            count: 10,
-            start: 0,
             subjects: null,
             total: 0,
             isRefreshing: false,
@@ -87,8 +85,6 @@ class HomeContentComponent extends Component {
         this.setState({
             subjects: res.subjects,
             total: res.total,
-            count: res.count,
-            start: res.start,
             isRefreshing: false
         });
     };
@@ -111,8 +107,6 @@ class HomeContentComponent extends Component {
         this.setState({
             subjects: _.concat(subjectArr, res.subjects),
             total: res.total,
-            count: res.count,
-            start: res.start,
             isLoading: false
         });
     };
@@ -121,8 +115,6 @@ class HomeContentComponent extends Component {
 
         this.setState({
             index,
-            count: 10,
-            start: 0,
             subjects: null,
             total: 99,
             isRefreshing: false,
