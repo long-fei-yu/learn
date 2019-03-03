@@ -4,13 +4,14 @@ import BaseStyle from '../../../lib/baseStyle';
 import Color from '../../../lib/color';
 import _ from 'lodash';
 import Dimen from '../../../lib/dimen';
-import RefreshFlatList from '../../../components/refreshFlatList';
+import RefreshFlatList from '../../../components/refresh/refreshFlatList';
 import Http from '../../../lib/http';
 import {URLS} from '../../../lib/urls';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import * as movieDetailsAction from '../../../redux/actions/movieDetailsAction';
 import {withNavigation} from 'react-navigation';
+import RefreshState from '../../../components/refresh/refreshState';
 
 const PAGE_SIZE = 10;
 
@@ -38,8 +39,6 @@ class HomeContentComponent extends Component {
             distance: new Animated.Value(deviceParameter.pw / 5 + 10),
             subjects: null,
             total: 0,
-            isRefreshing: false,
-            isLoading: false,
         }
     }
 
@@ -71,9 +70,6 @@ class HomeContentComponent extends Component {
     };
 
     onRefresh = () => {
-        this.setState({
-            isRefreshing: true
-        });
         if (this.state.index === 1) {
             this.getInTheaters(0);
         } else if (this.state.index === 3) {
@@ -85,15 +81,12 @@ class HomeContentComponent extends Component {
         this.setState({
             subjects: res.subjects,
             total: res.total,
-            isRefreshing: false
         });
+
+        this.listView.endRefreshing(RefreshState.Idle);
     };
 
     onLoadMore = (page) => {
-        this.setState({
-            isLoading: true
-        });
-
         if (this.state.index === 1) {
             this.getInTheaters(page);
         } else if (this.state.index === 3) {
@@ -107,18 +100,18 @@ class HomeContentComponent extends Component {
         this.setState({
             subjects: _.concat(subjectArr, res.subjects),
             total: res.total,
-            isLoading: false
         });
+
+        this.listView.endRefreshing(RefreshState.Idle);
     };
 
     onSwitch = (index) => {
+        this.listView.endRefreshing(RefreshState.Idle);
 
         this.setState({
             index,
             subjects: null,
             total: 99,
-            isRefreshing: false,
-            isLoading: false,
         });
 
         if (index === 1) {
@@ -158,7 +151,7 @@ class HomeContentComponent extends Component {
     };
 
     render() {
-        const {index, distance, subjects, total, isRefreshing, isLoading} = this.state;
+        const {index, distance, subjects, total} = this.state;
 
         return (
             <View style={BaseStyle.content}>
@@ -188,12 +181,11 @@ class HomeContentComponent extends Component {
                 <Animated.View style={[styles.interval, {marginLeft: distance}]}/>
 
                 <RefreshFlatList
+                    ref={ref => this.listView = ref}
                     data={subjects}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     total={total}
-                    isRefreshing={isRefreshing}
-                    isLoading={isLoading}
                     renderSeparator={() => <View style={styles.separator}/>}
                     renderItem={({item, index}) => <InTheatersItem
                         uri={item.images.small}

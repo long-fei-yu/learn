@@ -73,13 +73,6 @@ import ReadContainer from '../containers/douBan/read/readContainer';
 import MineContainer from '../containers/douBan/mine/mineContainer';
 
 /**
- *GitHub
- */
-
-import GitHubMainContainer from '../containers/gitHub/gitHubMainContainer';
-
-
-/**
  * 设置
  */
 import SettingContainer from '../containers/setting/settingContainer';
@@ -138,26 +131,6 @@ const DouBanStack = createBottomTabNavigator(
     }
 );
 
-
-/**
- * GitHubStack
- */
-const GitHubStack = createStackNavigator(
-    {
-        GitHubMain: {
-            screen: GitHubMainContainer,
-            navigationOptions: {
-                header: null,
-            },
-        },
-    },
-
-    {
-        initialRouteName: 'GitHubMain',
-    }
-);
-
-
 /**
  * 主页面Stack 侧滑效果(抽屉)
  */
@@ -166,7 +139,6 @@ const MainStack = createDrawerNavigator(
         Menu: MenusContainer,
         ZhiHu: ZhiHuStack,
         DouBan: DouBanStack,
-        GitHub: GitHubStack,
         About: AboutContainer,
         Setting: SettingContainer,
     },

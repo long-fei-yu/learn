@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
 import BaseStyle from '../../lib/baseStyle';
 import RefreshState from './refreshState';
 
@@ -33,16 +33,15 @@ export default class RefreshFooter extends Component {
 
         switch (state) {
             case RefreshState.Idle:
-                footer = <View style={styles.loadingView}/>;
                 // Idle情况下为null，不显示尾部组件
                 break;
             case RefreshState.Refreshing:
                 // 显示一个loading视图
-                footer = (
+                footer =
                     <View style={styles.loadingView}>
                         <ActivityIndicator size="small"/>
                         <Text style={styles.refreshingText}>{this.props.footerRefreshingText}</Text>
-                    </View>);
+                    </View>;
                 break;
 
             case RefreshState.CanLoadMore:
@@ -93,19 +92,5 @@ const styles = StyleSheet.create({
     footerText: {
         fontSize: 12,
         color: "#666666"
-    },
-
-
-    loadBox: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-    moreTextBox: {
-        marginLeft: 10,
-        height: 20,
-        alignItems: 'center',
-        justifyContent: 'center'
     },
 });

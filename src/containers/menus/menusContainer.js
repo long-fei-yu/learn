@@ -50,10 +50,6 @@ export default class menusContainer extends BaseComponent {
                                  isSelect={menusReducer.index === 1 ? true : false}
                                  onPress={this.onTabPress.bind(this, 'DouBan', 1)}/>
 
-                        <MenuTab text={'GitHub'} path={require('../../images/menus/git_hub_launcher.png')}
-                                 isSelect={menusReducer.index === 2 ? true : false}
-                                 onPress={this.onTabPress.bind(this, 'GitHub', 2)}/>
-
                         <View style={[styles.title, styles.option]}>
                             <Text style={BaseStyle.s16c999999}>选项</Text>
                         </View>
