@@ -5,4 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!--设置 Dialog 全屏-->
+    <style name="Dialog_Fullscreen">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

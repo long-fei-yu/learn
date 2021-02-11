@@ -3,6 +3,7 @@ import {
     createMaterialTopTabNavigator,
     createStackNavigator,
     createDrawerNavigator,
+    createSwitchNavigator
 } from 'react-navigation';
 import React from 'react';
 import Color from '../lib/color';
@@ -29,12 +30,16 @@ import MenusContainer from '../containers/menus/menusContainer';
 import DailyContainer from '../containers/zhiHu/daily/dailyContainer';
 //日报详情
 import DailyDetailContainer from '../containers/zhiHu/daily/dailyDetailContainer';
+//评论
+import DailyCommentContainer from '../containers/zhiHu/daily/dailyCommentContainer';
 
 //主题
 import ThemeContainer from '../containers/zhiHu/theme/themeContainer';
 
 //专栏
 import ColumnContainer from '../containers/zhiHu/column/columnContainer';
+//专栏详情
+import ColumnDetailContainer from '../containers/zhiHu/column/columnDetailContainer';
 
 //热门
 import PopularContainer from '../containers/zhiHu/popular/popularContainer';
@@ -48,6 +53,15 @@ import HomeContainer from '../containers/douBan/home/homeContainer';
 
 //电影
 import MovieContainer from '../containers/douBan/movie/movieContainer';
+//豆瓣Top250
+import MovieTop250Container from '../containers/douBan/movie/movieTop250Container';
+//口碑电影
+import MoviePraiseContainer from '../containers/douBan/movie/moviePraiseContainer';
+//新片榜
+import  MovieNewContainer from '../containers/douBan/movie/movieNewContainer';
+
+//电影搜索结果
+import SearchResultsContainer from '../containers/douBan/search/searchResultsContainer';
 
 //电影详情
 import MovieDetailsContainer from '../containers/douBan/movie/movieDetailsContainer';
@@ -57,7 +71,6 @@ import ReadContainer from '../containers/douBan/read/readContainer';
 
 //我的
 import MineContainer from '../containers/douBan/mine/mineContainer';
-
 
 /**
  * 设置
@@ -70,6 +83,10 @@ import SettingContainer from '../containers/setting/settingContainer';
 
 import AboutContainer from '../containers/about/aboutContainer';
 
+/**
+ * 加载网页
+ */
+import WebContainer from '../containers/web/webContainer';
 
 /**
  * 知乎Stack
@@ -114,7 +131,6 @@ const DouBanStack = createBottomTabNavigator(
     }
 );
 
-
 /**
  * 主页面Stack 侧滑效果(抽屉)
  */
@@ -125,7 +141,6 @@ const MainStack = createDrawerNavigator(
         DouBan: DouBanStack,
         About: AboutContainer,
         Setting: SettingContainer,
-
     },
     {
         initialRouteName: 'ZhiHu',
@@ -152,16 +167,54 @@ const RootStack = createStackNavigator(
                 header: null,
             },
         },
+        DailyDetail: {
+            screen: DailyDetailContainer,
+            navigationOptions: ({navigation}) => (
+                {
+                    title: navigation.state.params && navigation.state.params.title,
+                }
+            ),
+        },
+        DailyComment: {
+            screen: DailyCommentContainer,
+            navigationOptions: {
+                title: '评论',
+            }
+        },
+        ColumnDetail: {
+            screen: ColumnDetailContainer,
+            navigationOptions: ({navigation}) => (
+                {
+                    title: navigation.state.params.title,
+                }
+            )
+        },
+        MoviePraise: {
+            screen: MoviePraiseContainer,
+        },
+        MovieTop250: {
+            screen: MovieTop250Container,
+        },
+        MovieNew: {
+            screen: MovieNewContainer,
+        },
         MovieDetails: {
             screen: MovieDetailsContainer,
             navigationOptions: {
                 title: '电影详情',
             }
         },
-        DailyDetail: {
-            screen: DailyDetailContainer,
+        SearchResults: {
+            screen: SearchResultsContainer,
             navigationOptions: {
-                title: '电影详情',
+                title: '电影搜索',
+            }
+        },
+
+        Web: {
+            screen: WebContainer,
+            navigationOptions: {
+                title: 'Web',
             }
         },
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import BaseStyle from '../../lib/baseStyle';
-import Color from "../../lib/color";
+import Color from '../../lib/color';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 

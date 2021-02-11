@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, SafeAreaView, Animated} from 'react-native';
 import BaseStyle from '../lib/baseStyle';
 import {Header} from '../components/header';
-import Color from "../lib/color";
+import Color from '../lib/color';
 
 export default class TabBarNav extends Component<Props> {
 
@@ -47,27 +47,27 @@ export default class TabBarNav extends Component<Props> {
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.titleItem} onPress={() => {
-                            navigation.navigate('Theme');
+                            navigation.navigate('Column');
                             this.onSliding(1);
                         }}>
                             <Text
-                                style={[BaseStyle.s16c333333, {color: index === 1 ? Color.c2EBDED : Color.c333333}]}>主题</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.titleItem} onPress={() => {
-                            navigation.navigate('Column');
-                            this.onSliding(2);
-                        }}>
-                            <Text
-                                style={[BaseStyle.s16c333333, {color: index === 2 ? Color.c2EBDED : Color.c333333}]}>专栏</Text>
+                                style={[BaseStyle.s16c333333, {color: index === 1 ? Color.c2EBDED : Color.c333333}]}>专栏</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.titleItem} onPress={() => {
                             navigation.navigate('Popular');
+                            this.onSliding(2);
+                        }}>
+                            <Text
+                                style={[BaseStyle.s16c333333, {color: index === 2 ? Color.c2EBDED : Color.c333333}]}>热门</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.titleItem} onPress={() => {
+                            navigation.navigate('Theme');
                             this.onSliding(3);
                         }}>
                             <Text
-                                style={[BaseStyle.s16c333333, {color: index === 3 ? Color.c2EBDED : Color.c333333}]}>热门</Text>
+                                style={[BaseStyle.s16c333333, {color: index === 3 ? Color.c2EBDED : Color.c333333}]}>主题</Text>
                         </TouchableOpacity>
 
                     </View>

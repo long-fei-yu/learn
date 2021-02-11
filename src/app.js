@@ -7,14 +7,18 @@
  */
 
 import React, {Component} from 'react';
-
 import './lib/deviceParameter';
-
 import {AppNavigator} from './routers';
 import {createAppContainer} from 'react-navigation';
-
+import {Provider} from 'react-redux';
+import {store} from './redux/store/index';
+import {View} from 'react-native';
+import BaseStyle from './lib/baseStyle';
+import Loading from './components/loading';
 
 const AppContainer = createAppContainer(AppNavigator);
+
+let loadingRef;
 
 export default class App extends Component<Props> {
 
@@ -40,16 +44,32 @@ export default class App extends Component<Props> {
         }
     }
 
+    componentDidMount() {
+        loadingRef = this.loading;
+    }
+
 
     render() {
-        return <AppContainer
-            onNavigationStateChange={(prevState, newState, action) => {
-                //console.log('prevState', prevState);
-                //console.log('newState', newState);
-                //console.log('action', action);
-            }}
-        />;
+        return (
+            <Provider store={store}>
+                <View style={BaseStyle.content}>
+
+                    <Loading
+                        ref={loading => {
+                            this.loading = loading
+                        }}/>
+
+                    <AppContainer
+                        onNavigationStateChange={(prevState, newState, action) => {
+                            //console.log('prevState', prevState);
+                            //console.log('newState', newState);
+                            //console.log('action', action);
+                        }}
+                    />
+                </View>
+            </Provider>
+        );
     }
 }
 
-
+export {loadingRef};

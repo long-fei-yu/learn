@@ -1,52 +1,66 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import React from 'react';
+import {StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 import BaseComponent from '../../baseComponent';
-import BaseStyle from "../../../lib/baseStyle";
+import BaseStyle from '../../../lib/baseStyle';
 import Http from '../../../lib/http';
-import  {URLS} from '../../../lib/urls';
-import NewsCcomponent from '../newsCcomponent';
+import {URLS} from '../../../lib/urls';
+import NewsComponent from '../newsComponent';
+import {connect} from 'react-redux';
+import * as dailyDetailAction from '../../../redux/actions/dailyDetailAction';
 
-
+@connect(
+    null,
+    dispatch => (
+        {
+            setId: id => {
+                dispatch(dailyDetailAction.setId(id));
+            }
+        }
+    )
+)
 export default class PopularContainer extends BaseComponent {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            data: [1, 2, 3, 4],
+            data: [],
         };
     }
 
     componentDidMount() {
-        console.log('hot', Http.get(URLS.hot));
-        /*Http.get(URLS.hot).then((response) => {
-         console.log('componentDidMount', response);
-         this.setState({data: response.recent});
-         });*/
+        Http.get({url: URLS.hot}, (res) => {
+            this.setState({
+                data: res.recent
+            });
+        });
     }
 
-    onPress = () => {
-
+    onPress = (id) => {
+        this.props.setId(id);
+        this.push('DailyDetail');
     };
 
     render() {
-
         const {data} = this.state;
 
         return (
             <SafeAreaView style={BaseStyle.container}>
-                <View style={BaseStyle.content}>
-
+                <ScrollView style={BaseStyle.content}
+                            bounces={false}
+                            scrollEnabled={true}
+                            automaticallyAdjustContentInsets={false}
+                            scrollEventThrottle={10}>
                     {
                         data.map((data, index) => {
-                            return <NewsCcomponent key={index}
-                                                   url={'https://pic4.zhimg.com/v2-e70647e35eb09ce571546426727aa2df.jpg'}
-                                                   title={'瞎扯：如何正确地吐槽瞎扯：如何正确地吐槽瞎扯：如何正确地吐槽瞎扯：如何正确地吐槽'}
-                                                   onPress={this.onPress}/>
+                            return <NewsComponent key={data + index}
+                                                  index={index}
+                                                  url={data.thumbnail}
+                                                  title={data.title}
+                                                  onPress={this.onPress.bind(this, data.news_id)}/>
                         })
                     }
-
-                </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }
